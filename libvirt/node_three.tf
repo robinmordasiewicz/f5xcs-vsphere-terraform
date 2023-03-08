@@ -11,7 +11,7 @@ resource "libvirt_domain" "vm3" {
   count            = var.cluster_size == 3 ? 1 : 0
   name             = var.nodenames["nodethree"]
   datacenter_id    = data.libvirt_datacenter.dc.id
-  resource_pool_id = data.libvirt_resource_pool.pool.id
+  resource_pool_id = data.libvirt_pool.pool.id
   datastore_id     = data.libvirt_datastore.datastore_three.id
   host_system_id   = data.libvirt_host.host_three.id
 
@@ -37,7 +37,7 @@ resource "libvirt_domain" "vm3" {
 
   ovf_deploy {
     allow_unverified_ssl_cert = true
-    local_ovf_path            = var.xcsovapath
+    local_ovf_path            = var.xcovapath
 
     disk_provisioning = "thick"
 

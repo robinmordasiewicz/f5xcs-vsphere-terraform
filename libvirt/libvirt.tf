@@ -20,7 +20,7 @@ data "libvirt_datacenter" "dc" {
   name = var.datacenter
 }
 
-data "libvirt_resource_pool" "pool" {
+data "libvirt_pool" "pool" {
   name          = var.resource_pool
   datacenter_id = data.libvirt_datacenter.dc.id
 }
