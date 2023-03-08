@@ -12,7 +12,7 @@ module "util" {
 module "vsphere" {
   source = "./vsphere"
 
-  xcsovapath             = var.xcsovapath
+  xcovapath             = var.xcovapath
   user                   = var.user
   password               = var.password
   vsphere_server         = var.vsphere_server
@@ -45,8 +45,8 @@ module "vsphere" {
 # Volterra Module
 # Build Site Token and Cloud Credential
 # Build out GCP Site
-module "xcs" {
-  source = "./xcs"
+module "xc" {
+  source = "./xc"
 
   depends_on = [
     module.vsphere.vm1, module.vsphere.vm2, module.vsphere.vm3
