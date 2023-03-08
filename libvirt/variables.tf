@@ -1,12 +1,12 @@
 variable "user" {}
 variable "password" {}
-variable "vsphere_server" {}
+variable "libvirt_server" {}
 variable "datacenter" {}
-variable "vsphere_host_one" {}
+variable "libvirt_host_one" {}
 variable "datastore_one" {}
-variable "vsphere_host_two" {}
+variable "libvirt_host_two" {}
 variable "datastore_two" {}
-variable "vsphere_host_three" {}
+variable "libvirt_host_three" {}
 variable "datastore_three" {}
 variable "resource_pool" {}
 variable "outside_network" {}

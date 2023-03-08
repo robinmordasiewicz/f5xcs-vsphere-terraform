@@ -1,26 +1,26 @@
-provider "vsphere" {
+provider "libvirt" {
   user           = var.user
   password       = var.password
-  vsphere_server = var.vsphere_server
+  libvirt_server = var.libvirt_server
 
   allow_unverified_ssl = true
 }
 
-data "vsphere_datacenter" "dc" {
+data "libvirt_datacenter" "dc" {
   name = var.datacenter
 }
 
-data "vsphere_resource_pool" "pool" {
+data "libvirt_resource_pool" "pool" {
   name          = var.resource_pool
-  datacenter_id = data.vsphere_datacenter.dc.id
+  datacenter_id = data.libvirt_datacenter.dc.id
 }
 
-data "vsphere_network" "outside" {
+data "libvirt_network" "outside" {
   name          = var.outside_network
-  datacenter_id = data.vsphere_datacenter.dc.id
+  datacenter_id = data.libvirt_datacenter.dc.id
 }
 
-data "vsphere_network" "inside" {
+data "libvirt_network" "inside" {
   name          = var.inside_network
-  datacenter_id = data.vsphere_datacenter.dc.id
+  datacenter_id = data.libvirt_datacenter.dc.id
 }
