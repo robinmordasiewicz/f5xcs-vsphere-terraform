@@ -16,29 +16,12 @@ module "libvirt" {
   user                   = var.user
   password               = var.password
   libvirt_server         = var.libvirt_server
-  datacenter             = var.datacenter
-  libvirt_host_one       = var.libvirt_host_one
-  libvirt_host_two       = var.libvirt_host_two
-  libvirt_host_three     = var.libvirt_host_three
-  datastore_one          = var.datastore_one
-  datastore_two          = var.datastore_two
-  datastore_three        = var.datastore_three
-  resource_pool          = var.resource_pool
+  libvirt_hostnames      = var.hostnames
   nodenames              = var.nodenames
-  outside_network        = var.outside_network
-  inside_network         = var.inside_network
   dnsservers             = var.dnsservers
   guest_type             = var.guest_type
   cpus                   = var.cpus
   memory                 = var.memory
-  certifiedhardware      = var.certifiedhardware
-  publicinterfaceaddress = var.public_addresses
-  publicdefaultroute     = var.publicdefaultroute
-  publicdefaultgateway   = var.publicdefaultgateway
-  sitelatitude           = var.sitelatitude
-  sitelongitude          = var.sitelongitude
-  clustername            = format("%s-cluster", var.sitename)
-  sitetoken              = var.sitetoken
   cluster_size           = var.cluster_size
 }
 

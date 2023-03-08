@@ -3,6 +3,11 @@ variable "cluster_size" {
   description = "REQUIRED:  Set Cluster Size, options are 1 or 3 today."
   default     = 3
 }
+variable "hostnames" {
+  description    = "Create these hosts"
+  type           = list(string)
+  default        = ["mains01", "mains02", "mains03"]
+}
 variable "user" {
   type        = string
   description = "REQUIRED:  Provide a vpshere username.  [admin@libvirt.local]"
