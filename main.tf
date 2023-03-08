@@ -15,11 +15,11 @@ module "libvirt" {
   xcovapath              = var.xcovapath
   user                   = var.user
   password               = var.password
-  vsphere_server         = var.vsphere_server
+  libvirt_server         = var.libvirt_server
   datacenter             = var.datacenter
-  vsphere_host_one       = var.vsphere_host_one
-  vsphere_host_two       = var.vsphere_host_two
-  vsphere_host_three     = var.vsphere_host_three
+  libvirt_host_one       = var.libvirt_host_one
+  libvirt_host_two       = var.libvirt_host_two
+  libvirt_host_three     = var.libvirt_host_three
   datastore_one          = var.datastore_one
   datastore_two          = var.datastore_two
   datastore_three        = var.datastore_three

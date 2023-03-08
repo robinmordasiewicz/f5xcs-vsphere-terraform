@@ -5,18 +5,18 @@ variable "cluster_size" {
 }
 variable "user" {
   type        = string
-  description = "REQUIRED:  Provide a vpshere username.  [admin@vsphere.local]"
-  default     = "admin@vsphere.local"
+  description = "REQUIRED:  Provide a vpshere username.  [admin@libvirt.local]"
+  default     = "admin@libvirt.local"
 }
 variable "password" {
   type        = string
-  description = "REQUIRED:  Provide a vsphere password."
+  description = "REQUIRED:  Provide a libvirt password."
   default     = "pass@word1"
 }
-variable "vsphere_server" {
+variable "libvirt_server" {
   type        = string
-  description = "REQUIRED:  Provide a vsphere server or appliance. [vSphere URL (IP, hostname or FQDN)]"
-  default     = "vsphere.domain.com"
+  description = "REQUIRED:  Provide a libvirt server or appliance. [vSphere URL (IP, hostname or FQDN)]"
+  default     = "libvirt.domain.com"
 }
 variable "libvirt_uri" {
   type        = string
@@ -28,17 +28,17 @@ variable "datacenter" {
   description = "REQUIRED:  Provide a Datacenter Name."
   default     = "Default Datacenter"
 }
-variable "vsphere_host_one" {
+variable "libvirt_host_one" {
   type        = string
   description = "REQUIRED:  Provide a vcenter host. [vCenter URL (IP, hostname or FQDN)]"
   default     = "vcenter.domain.com"
 }
-variable "vsphere_host_two" {
+variable "libvirt_host_two" {
   type        = string
   description = "REQUIRED:  Provide a vcenter host. [vCenter URL (IP, hostname or FQDN)]"
   default     = "vcenter2.domain.com"
 }
-variable "vsphere_host_three" {
+variable "libvirt_host_three" {
   type        = string
   description = "REQUIRED:  Provide a vcenter host. [vCenter URL (IP, hostname or FQDN)]"
   default     = "vcenter3.domain.com"
@@ -181,7 +181,7 @@ variable "nodenames" {
 variable "clustername" {
   type        = string
   description = "REQUIRED: Site Cluster Name."
-  default     = "coleman-vsphere-cluster"
+  default     = "coleman-libvirt-cluster"
 }
 
 variable "sitetoken" {
