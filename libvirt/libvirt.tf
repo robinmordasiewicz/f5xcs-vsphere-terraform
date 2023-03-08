@@ -1,9 +1,19 @@
-provider "libvirt" {
-  user           = var.user
-  password       = var.password
-  libvirt_server = var.libvirt_server
+terraform {
+  required_providers {
+    volterra = {
+      source = "volterraedge/volterra"
+      version = "0.11.19"
+    }
+    libvirt = {
+      source = "dmacvicar/libvirt"
+      version = "0.7.1"
+    }
+  }
+}
 
-  allow_unverified_ssl = true
+provider "libvirt" {
+  uri = var.libvirt_server
+
 }
 
 data "libvirt_datacenter" "dc" {

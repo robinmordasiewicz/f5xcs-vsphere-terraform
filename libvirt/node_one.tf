@@ -1,32 +1,32 @@
 
-data "vsphere_datastore" "datastore_one" {
+data "libvirt_datastore" "datastore_one" {
   name          = var.datastore_one
-  datacenter_id = data.vsphere_datacenter.dc.id
+  datacenter_id = data.libvirt_datacenter.dc.id
 }
 
-data "vsphere_host" "host_one" {
-  name          = var.vsphere_host_one
-  datacenter_id = data.vsphere_datacenter.dc.id
+data "libvirt_host" "host_one" {
+  name          = var.libvirt_host_one
+  datacenter_id = data.libvirt_datacenter.dc.id
 }
 
-resource "vsphere_virtual_machine" "vm" {
+resource "libvirt_domain" "vm" {
   count            = var.cluster_size >= 1 ? 1 : 0
   name             = var.nodenames["nodeone"]
-  datacenter_id    = data.vsphere_datacenter.dc.id
-  resource_pool_id = data.vsphere_resource_pool.pool.id
-  datastore_id     = data.vsphere_datastore.datastore_one.id
-  host_system_id   = data.vsphere_host.host_one.id
+  datacenter_id    = data.libvirt_datacenter.dc.id
+  resource_pool_id = data.libvirt_resource_pool.pool.id
+  datastore_id     = data.libvirt_datastore.datastore_one.id
+  host_system_id   = data.libvirt_host.host_one.id
 
   num_cpus = var.cpus
   memory   = var.memory
   guest_id = var.guest_type
 
   network_interface {
-    network_id   = data.vsphere_network.outside.id
+    network_id   = data.libvirt_network.outside.id
     adapter_type = "vmxnet3"
   }
   network_interface {
-    network_id   = data.vsphere_network.inside.id
+    network_id   = data.libvirt_network.inside.id
     adapter_type = "vmxnet3"
   }
 
@@ -44,8 +44,8 @@ resource "vsphere_virtual_machine" "vm" {
     disk_provisioning = "thick"
 
     ovf_network_map = {
-      "OUTSIDE" = data.vsphere_network.outside.id
-      "REGULAR" = data.vsphere_network.inside.id
+      "OUTSIDE" = data.libvirt_network.outside.id
+      "REGULAR" = data.libvirt_network.inside.id
     }
   }
 
@@ -72,5 +72,5 @@ resource "vsphere_virtual_machine" "vm" {
 }
 
 output "vm1" {
-  value = vsphere_virtual_machine.vm[*].id
+  value = libvirt_domain.vm[*].id
 }

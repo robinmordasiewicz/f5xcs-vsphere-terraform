@@ -15,8 +15,7 @@ variable "publicdefaultgateway" {}
 variable "dnsservers" {}
 variable "cpus" {}
 variable "memory" {}
-variable "xcsovapath" {}
-
+variable "xcovapath" {}
 variable "certifiedhardware" {}
 variable "publicinterfaceaddress" {}
 variable "publicdefaultroute" {}
@@ -26,5 +25,4 @@ variable "nodenames" {}
 variable "clustername" {}
 variable "sitetoken" {}
 variable "guest_type" {}
-
 variable "cluster_size" {}
