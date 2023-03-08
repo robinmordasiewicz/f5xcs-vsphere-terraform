@@ -1,3 +1,9 @@
-variable "hostnames" {}
 variable "cluster_size" {}
 variable "nodenames" {}
+variable "memory" {}
+variable "cpus" {}
+variable "hostnames" {}
+variable "libvirt_uri" {}
+variable "user" {}
+variable "xcovapath" {}
+variable "guest_type" {}

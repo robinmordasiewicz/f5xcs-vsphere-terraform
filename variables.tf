@@ -18,11 +18,6 @@ variable "password" {
   description = "REQUIRED:  Provide a libvirt password."
   default     = "pass@word1"
 }
-variable "libvirt_server" {
-  type        = string
-  description = "REQUIRED:  Provide a libvirt server or appliance. [vSphere URL (IP, hostname or FQDN)]"
-  default     = "libvirt.domain.com"
-}
 variable "libvirt_uri" {
   type        = string
   description = "REQUIRED: credentials for KVM"

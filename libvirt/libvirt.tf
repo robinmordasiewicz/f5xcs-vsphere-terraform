@@ -12,5 +12,5 @@ terraform {
 }
 
 provider "libvirt" {
-  uri = var.libvirt_server
+  uri = var.libvirt_uri
 }

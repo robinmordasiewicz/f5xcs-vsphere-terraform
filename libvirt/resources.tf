@@ -15,12 +15,6 @@ resource "libvirt_volume" "diskimage" {
   format         = "qcow2"
 }
 
-resource "libvirt_cloudinit_disk" "cloudinit" {
-  name           = "xc-cloudinit.iso"
-  user_data      = templatefile("${path.module}/http/cloudinit.yml", {})
-  pool           = "default"
-}
-
 resource "libvirt_domain" "volterradomain" {
   count          = length(var.hostnames)
   name           = var.hostnames[count.index]
@@ -29,18 +23,15 @@ resource "libvirt_domain" "volterradomain" {
   machine        = "pc-q35-6.2"
 
   xml {
-    xslt         = file("machine.xsl")
+    xslt         = file("${path.module}/machine.xsl")
   }
   vcpu           = 4
   qemu_agent     = true
 
   network_interface {
     macvtap      = "enp109s0"
-#    wait_for_lease = true
   }
  
-#  cloudinit = libvirt_cloudinit_disk.cloudinit.id
-
   cpu {
     mode         = "host-passthrough"
   }
@@ -59,7 +50,6 @@ resource "libvirt_domain" "volterradomain" {
 
   disk {
     volume_id    = element(libvirt_volume.diskimage[*].id, count.index)
-     #volume_id    = var.hostnames[count.index].id
   }
 
   graphics {
@@ -73,6 +63,3 @@ output "name" {
   value = libvirt_domain.volterradomain[*].name
 }
 
-#output "ip_address" {
-#  value = libvirt_domain.volterradomain[*].network_interface[0].addresses[0]
-#}

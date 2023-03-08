@@ -14,11 +14,9 @@ module "libvirt" {
 
   xcovapath              = var.xcovapath
   user                   = var.user
-  password               = var.password
-  libvirt_server         = var.libvirt_server
-  libvirt_hostnames      = var.hostnames
+  libvirt_uri            = var.libvirt_uri
+  hostnames              = var.hostnames
   nodenames              = var.nodenames
-  dnsservers             = var.dnsservers
   guest_type             = var.guest_type
   cpus                   = var.cpus
   memory                 = var.memory

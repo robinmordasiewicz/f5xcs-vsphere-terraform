@@ -17,7 +17,7 @@ override.tf.json
 *_override.tf.json
 .terraform.lock.hcl
 
-**/creds/
+**/creds/*
 prep.sh
 
 **/debug/*
