@@ -82,12 +82,12 @@ variable "cpus" {
 variable "memory" {
   type        = number
   description = "REQUIRED:  Provide RAM in Mb.  [ Not Less than 14336Mb ]"
-  default     = 14336
+  default     = 16384
 }
 #OVA Path
-variable "xcsovapath" {
+variable "xcovapath" {
   type        = string
-  description = "REQUIRED: Path to XCS OVA. See https://docs.cloud.f5.com/docs/images/node-vmware-images"
+  description = "REQUIRED: Path to XC OVA. See https://docs.cloud.f5.com/docs/images/node-vmware-images"
   default     = "/home/michael/Downloads/centos-7.2009.10-202107041731.ova"
 }
 #Guest Type
@@ -97,50 +97,51 @@ variable "guest_type" {
   default     = "other3xLinux64Guest"
 }
 
-## XCS Values
+## XC Values
 // Required Variable
 variable "projectName" {
   type        = string
-  description = "REQUIRED:  Provide a Prefix for use in F5 XCS created resources"
+  description = "REQUIRED:  Provide a Prefix for use in F5 XC created resources"
   default     = "project-name"
 }
 variable "tenant" {
   type        = string
-  description = "REQUIRED:  Provide the F5 XCS Tenant name."
+  description = "REQUIRED:  Provide the F5 XC Tenant name."
   default     = "xc tenant id"
 }
 
 variable "certifiedhardware" {
   type        = string
-  description = "REQUIRED: XCS Certified Hardware Type: vmware-voltmesh, vmware-voltstack-combo, vmware-regular-nic-voltmesh, vmware-multi-nic-voltmesh, vmware-multi-nic-voltstack-combo"
-  default     = "vmware-voltstack-combo"
+  description = "REQUIRED: XC Certified Hardware Type: kvm-voltmesh, kvm-voltstack-combo, kvm-regular-nic-voltmesh, kvm-multi-nic-voltmesh, kvm-multi-nic-voltstack-combo"
+  default     = "kvm-voltstack-combo"
 }
+
 variable "public_addresses" {
   type        = map(string)
-  description = "REQUIRED: XCS Node Public Interfaces Addresses"
+  description = "REQUIRED: XC Node Public Interfaces Addresses"
   default = {
-    nodeone   = "192.168.125.66/24"
-    nodetwo   = "192.168.125.67/24"
-    nodethree = "192.168.125.68/24"
+    nodeone   = "10.1.1.66/24"
+    nodetwo   = "10.1.1.67/24"
+    nodethree = "10.1.1.68/24"
   }
 }
 
 variable "publicinterfaceaddress" {
   type        = string
-  description = "REQUIRED: XCS Public interface Address.  Must include CIDR notation."
-  default     = "192.168.125.66/24"
+  description = "REQUIRED: XC Public interface Address.  Must include CIDR notation."
+  default     = "10.1.1.66/24"
 }
 
 variable "publicdefaultroute" {
   type        = string
-  description = "REQUIRED: XCS Public default route.  Must include CIDR notation."
+  description = "REQUIRED: XC Public default route.  Must include CIDR notation."
   default     = "0.0.0.0/0"
 }
 
 variable "publicdefaultgateway" {
   type        = string
-  description = "REQUIRED: XCS Public default route.  Must include CIDR notation."
-  default     = "192.168.125.1"
+  description = "REQUIRED: XC Public default route.  Must include CIDR notation."
+  default     = "10.1.1.1"
 }
 
 variable "sitelatitude" {
@@ -155,7 +156,7 @@ variable "sitelongitude" {
 }
 
 variable "dnsservers" {
-  description = "REQUIRED: XCS Site DNS Servers."
+  description = "REQUIRED: XC Site DNS Servers."
   type        = map(string)
   default = {
     primary   = "8.8.8.8"
@@ -163,7 +164,7 @@ variable "dnsservers" {
   }
 }
 variable "nodenames" {
-  description = "REQUIRED: XCS Node Names."
+  description = "REQUIRED: XC Node Names."
   type        = map(string)
   default = {
     nodeone   = "edgesite-0"
@@ -171,11 +172,13 @@ variable "nodenames" {
     nodethree = "edgesite-2"
   }
 }
+
 variable "clustername" {
   type        = string
   description = "REQUIRED: Site Cluster Name."
   default     = "coleman-vsphere-cluster"
 }
+
 variable "sitetoken" {
   type        = string
   description = "REQUIRED: Site Registration Token."
@@ -193,32 +196,38 @@ variable "sshPublicKey" {
   description = "OPTIONAL: ssh public key for instances"
   default     = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCXDDEkuD25u74rkkBBgJP9FqiPM1d2a+PCTusqY/5FBE4mnDTDhaXfvWWN/atGtpnOu7MppEcQVuZGAcl4k0+JSP69WHVYPBC1354ra7cYsuhHYy8lbD2Kk9LcLDGBUKmzGiab080GZ1dQEwReVYrw+6YiI6aU6IDLx2gHmVNxsw=="
 }
+
 variable "sshPublicKeyPath" {
   type        = string
   description = "OPTIONAL: ssh public key path for instances"
   default     = "~/.ssh/id_rsa.pub"
 }
+
 // Required Variable
 variable "api_p12_file" {
   type        = string
   description = "REQUIRED:  This is the path to the volterra API Key.  See https://volterra.io/docs/how-to/user-mgmt/credentials"
   default     = "./api-creds.p12"
 }
+
 variable "namespace" {
   type        = string
   description = "REQUIRED:  This is your volterra App Namespace"
   default     = "namespace"
 }
+
 variable "api_cert" {
   type        = string
   description = "REQUIRED:  This is the path to the volterra API Key.  See https://volterra.io/docs/how-to/user-mgmt/credentials"
   default     = "./api2.cer"
 }
+
 variable "api_key" {
   type        = string
   description = "REQUIRED:  This is the path to the volterra API Key.  See https://volterra.io/docs/how-to/user-mgmt/credentials"
   default     = "./api.key"
 }
+
 variable "api_url" {
   type        = string
   description = "REQUIRED:  This is your volterra API url"
