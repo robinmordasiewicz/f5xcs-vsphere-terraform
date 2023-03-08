@@ -8,16 +8,10 @@ variable "hostnames" {
   type           = list(string)
   default        = ["mains01", "mains02", "mains03"]
 }
-variable "user" {
-  type        = string
-  description = "REQUIRED:  Provide a vpshere username.  [admin@libvirt.local]"
-  default     = "admin@libvirt.local"
-}
-variable "password" {
-  type        = string
-  description = "REQUIRED:  Provide a libvirt password."
-  default     = "pass@word1"
-}
+
+variable "libvirt_admin" {}
+variable "libvirt_ip" {}
+
 variable "libvirt_uri" {
   type        = string
   description = "REQUIRED: credentials for KVM"
@@ -27,42 +21,6 @@ variable "datacenter" {
   type        = string
   description = "REQUIRED:  Provide a Datacenter Name."
   default     = "Default Datacenter"
-}
-variable "libvirt_host_one" {
-  type        = string
-  description = "REQUIRED:  Provide a vcenter host. [vCenter URL (IP, hostname or FQDN)]"
-  default     = "vcenter.domain.com"
-}
-variable "libvirt_host_two" {
-  type        = string
-  description = "REQUIRED:  Provide a vcenter host. [vCenter URL (IP, hostname or FQDN)]"
-  default     = "vcenter2.domain.com"
-}
-variable "libvirt_host_three" {
-  type        = string
-  description = "REQUIRED:  Provide a vcenter host. [vCenter URL (IP, hostname or FQDN)]"
-  default     = "vcenter3.domain.com"
-}
-variable "datastore_one" {
-  type        = string
-  description = "REQUIRED:  Provide a Datastore Name."
-  default     = "datastore-1"
-}
-variable "datastore_two" {
-  type        = string
-  description = "REQUIRED:  Provide a Datastore Name."
-  default     = "datastore-2"
-}
-variable "datastore_three" {
-  type        = string
-  description = "REQUIRED:  Provide a Datastore Name."
-  default     = "datastore-3"
-}
-variable "resource_pool" {
-  type        = string
-  description = "REQUIRED:  Provide a Resource Pool Name."
-  default     = "resource pool"
-
 }
 # Virtual Machine configuration
 
@@ -92,13 +50,11 @@ variable "memory" {
 #OVA Path
 variable "xcovapath" {
   type        = string
-  description = "REQUIRED: Path to XC OVA. See https://docs.cloud.f5.com/docs/images/node-vmware-images"
   default     = "/home/michael/Downloads/centos-7.2009.10-202107041731.ova"
 }
 #Guest Type
 variable "guest_type" {
   type        = string
-  description = "Guest OS Type: centos7_64Guest, other3xLinux64Guest"
   default     = "other3xLinux64Guest"
 }
 
@@ -106,18 +62,13 @@ variable "guest_type" {
 // Required Variable
 variable "projectName" {
   type        = string
-  description = "REQUIRED:  Provide a Prefix for use in F5 XC created resources"
   default     = "project-name"
 }
-variable "tenant" {
-  type        = string
-  description = "REQUIRED:  Provide the F5 XC Tenant name."
-  default     = "xc tenant id"
-}
+
+variable "tenant" {}
 
 variable "certifiedhardware" {
   type        = string
-  description = "REQUIRED: XC Certified Hardware Type: kvm-voltmesh, kvm-voltstack-combo, kvm-regular-nic-voltmesh, kvm-multi-nic-voltmesh, kvm-multi-nic-voltstack-combo"
   default     = "kvm-voltstack-combo"
 }
 
