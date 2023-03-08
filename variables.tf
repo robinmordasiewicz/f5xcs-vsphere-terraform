@@ -9,8 +9,15 @@ variable "hostnames" {
   default        = ["mains01", "mains02", "mains03"]
 }
 
-variable "libvirt_admin" {}
-variable "libvirt_ip" {}
+variable "libvirt_admin" {
+  type        = string
+}
+variable "libvirt_ip" {
+  type        = string
+}
+variable "VOLT_API_P12_FILE" {
+  type        = string
+}
 
 variable "libvirt_uri" {
   type        = string
@@ -157,13 +164,6 @@ variable "sshPublicKeyPath" {
   type        = string
   description = "OPTIONAL: ssh public key path for instances"
   default     = "~/.ssh/id_rsa.pub"
-}
-
-// Required Variable
-variable "api_p12_file" {
-  type        = string
-  description = "REQUIRED:  This is the path to the volterra API Key.  See https://volterra.io/docs/how-to/user-mgmt/credentials"
-  default     = "./api-creds.p12"
 }
 
 variable "namespace" {
