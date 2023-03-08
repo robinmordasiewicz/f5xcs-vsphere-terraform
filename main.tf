@@ -9,10 +9,10 @@ module "util" {
 
 # Vsphere Module
 # Import OVA and build machine(s)
-module "vsphere" {
-  source = "./vsphere"
+module "libvirt" {
+  source = "./libvirt"
 
-  xcovapath             = var.xcovapath
+  xcovapath              = var.xcovapath
   user                   = var.user
   password               = var.password
   vsphere_server         = var.vsphere_server
@@ -44,12 +44,12 @@ module "vsphere" {
 
 # Volterra Module
 # Build Site Token and Cloud Credential
-# Build out GCP Site
+# Build out libvirt site
 module "xc" {
   source = "./xc"
 
   depends_on = [
-    module.vsphere.vm1, module.vsphere.vm2, module.vsphere.vm3
+    module.libvirt.vm1, module.libvirt.vm2, module.libvirt.vm3
   ]
 
   sitename         = var.sitename

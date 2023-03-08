@@ -1,13 +1,9 @@
 terraform {
   required_version = ">= 0.13"
   required_providers {
-    volterrarm = {
-      source  = "volterraedge/volterra"
-      version = "0.11.7"
-    }
-    vsphere = {
-      source  = "hashicorp/vsphere"
-      version = "2.1.1"
+    libvirt = {
+      source     = "dmacvicar/libvirt"
+      version    = "0.7.1"
     }
     http = {
       source  = "hashicorp/http"
@@ -26,11 +22,7 @@ provider "volterrarm" {
 provider "http" {
 }
 
-
-provider "vsphere" {
-  user           = var.user
-  password       = var.password
-  vsphere_server = var.vsphere_server
-
-  allow_unverified_ssl = true
+provider "libvirt" {
+  uri            = var.libvirt_uri
 }
+

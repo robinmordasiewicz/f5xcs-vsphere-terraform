@@ -18,6 +18,11 @@ variable "vsphere_server" {
   description = "REQUIRED:  Provide a vsphere server or appliance. [vSphere URL (IP, hostname or FQDN)]"
   default     = "vsphere.domain.com"
 }
+variable "libvirt_uri" {
+  type        = string
+  description = "REQUIRED: credentials for KVM"
+  default     = "qemu+ssh://robin@192.168.1.95/system?sshauth=privkey&no_verify=1"
+}
 variable "datacenter" {
   type        = string
   description = "REQUIRED:  Provide a Datacenter Name."

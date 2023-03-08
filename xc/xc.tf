@@ -40,7 +40,7 @@ resource "volterra_virtual_site" "vsite" {
   site_type = "CUSTOMER_EDGE"
 }
 
-resource "volterra_voltstack_site" "vsphere_cluster_one" {
+resource "volterra_voltstack_site" "libvirt_cluster_one" {
   count     = var.cluster_size == 1 ? 1 : 0
   name      = format("%s-cluster", var.sitename)
   namespace = "system"
@@ -59,10 +59,10 @@ resource "volterra_voltstack_site" "vsphere_cluster_one" {
   default_network_config  = true
   default_storage_config  = true
   deny_all_usb            = true
-  volterra_certified_hw   = "vmware-voltstack-combo"
+  volterra_certified_hw   = "kvm-voltstack-combo"
 }
 
-resource "volterra_voltstack_site" "vsphere_cluster_multi" {
+resource "volterra_voltstack_site" "libvirt_cluster_multi" {
   count     = var.cluster_size == 3 ? 1 : 0
   name      = format("%s-cluster", var.sitename)
   namespace = "system"
@@ -81,13 +81,13 @@ resource "volterra_voltstack_site" "vsphere_cluster_multi" {
   default_network_config  = true
   default_storage_config  = true
   deny_all_usb            = true
-  volterra_certified_hw   = "vmware-voltstack-combo"
+  volterra_certified_hw   = "kvm-voltstack-combo"
 }
 
 resource "volterra_registration_approval" "approvalone_a" {
   count = var.cluster_size == 1 ? 1 : 0
   depends_on = [
-    volterra_voltstack_site.vsphere_cluster_one
+    volterra_voltstack_site.libvirt_cluster_one
   ]
   cluster_name = format("%s-cluster", var.sitename)
   hostname     = var.nodenames["nodeone"]
@@ -101,7 +101,7 @@ resource "volterra_registration_approval" "approvalone_a" {
 resource "volterra_registration_approval" "approvalone_b" {
   count = var.cluster_size == 3 ? 1 : 0
   depends_on = [
-    volterra_voltstack_site.vsphere_cluster_multi
+    volterra_voltstack_site.libvirt_cluster_multi
   ]
   cluster_name = format("%s-cluster", var.sitename)
   hostname     = var.nodenames["nodeone"]
@@ -115,7 +115,7 @@ resource "volterra_registration_approval" "approvalone_b" {
 resource "volterra_registration_approval" "approvaltwo" {
   count = var.cluster_size == 3 ? 1 : 0
   depends_on = [
-    volterra_voltstack_site.vsphere_cluster_multi, volterra_registration_approval.approvalone_b
+    volterra_voltstack_site.libvirt_cluster_multi, volterra_registration_approval.approvalone_b
   ]
   cluster_name = format("%s-cluster", var.sitename)
   hostname     = var.nodenames["nodetwo"]
@@ -128,7 +128,7 @@ resource "volterra_registration_approval" "approvaltwo" {
 resource "volterra_registration_approval" "approvalthree" {
   count = var.cluster_size == 3 ? 1 : 0
   depends_on = [
-    volterra_voltstack_site.vsphere_cluster_multi, volterra_registration_approval.approvalone_b, volterra_registration_approval.approvaltwo
+    volterra_voltstack_site.libvirt_cluster_multi, volterra_registration_approval.approvalone_b, volterra_registration_approval.approvaltwo
   ]
   cluster_name = format("%s-cluster", var.sitename)
   hostname     = var.nodenames["nodethree"]
