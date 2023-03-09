@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+#terraform destroy -auto-approve
 
 if [[ -z "${TF_VAR_VES_P12_PASSWORD}" ]]; then
   read -s -p "Enter cert passphrase: " TF_VAR_VES_P12_PASSWORD
@@ -26,7 +27,10 @@ if [[ -z "${TF_VAR_tenant}" ]]; then
   export TF_VAR_tenant
 fi
 
-export TF_VAR_VOLT_API_P12_FILE=./creds/.api-creds.p12
+export TF_VAR_VOLT_API_P12_FILE="./creds/jpmc.console.ves.volterra.io.api-creds.p12"
 
-terraform init
+terraform providers lock -platform=linux_amd64
+terraform init -upgrade
 terraform plan
+#terraform destroy -auto-approve
+terraform apply -auto-approve

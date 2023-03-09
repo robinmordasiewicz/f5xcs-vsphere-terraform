@@ -1,10 +1,12 @@
-variable "cluster_size" {}
-variable "nodenames" {}
-variable "memory" {}
-variable "cpus" {}
-variable "hostnames" {}
-variable "xcovapath" {}
-variable "guest_type" {}
-variable "libvirt_admin" {}
-variable "libvirt_ip" {}
-
+variable "hostnames" {
+  type    = list(string)
+  default = ["mains01", "mains02", "mains03"]
+}
+variable "libvirt_admin" {
+  type    = string
+  default = "robin"
+}
+variable "libvirt_ip" {
+  type    = string
+  default = "192.168.1.95"
+}

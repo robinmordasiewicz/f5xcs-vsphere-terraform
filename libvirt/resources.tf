@@ -1,8 +1,17 @@
+# genisoimage -output cidata.iso -V cidata -r -J user-data meta-data
+
+#resource "libvirt_cloudinit_disk" "cloudinit" {
+#  name           = "/var/lib/libvirt/images/iso/xc-cloudinit.iso"
+#  #name           = "iso/xc-cloudinit.iso"
+#  user_data      = templatefile("${path.module}/cloudinit.yml", {})
+#  pool           = "default"
+#}
+
 resource "libvirt_volume" "volterra" {
   name           = "volterra-qcow2"
   pool           = "default"
-  #source         = "/var/lib/libvirt/images/templates/xc-template.qcow2"
   source         = "/var/lib/libvirt/images/templates/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030.qcow2"
+  #source         = "templates/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030.qcow2"
   format         = "qcow2"
 }
 
