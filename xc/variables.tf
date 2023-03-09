@@ -2,7 +2,7 @@ variable "namespace" {}
 variable "projectName" {}
 variable "projectPrefix" {}
 variable "url" {}
-variable "api_p12_file" {}
+variable "VOLT_API_P12_FILE" {}
 #variable "tags" {}
 variable "sshPublicKey" {}
 variable "sshPublicKeyPath" {}

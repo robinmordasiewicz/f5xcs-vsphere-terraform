@@ -13,16 +13,16 @@ terraform {
 }
 
 provider "volterra" {
-  api_p12_file = var.api_p12_file
-  api_cert     = var.api_p12_file != "" ? "" : var.api_cert
-  api_key      = var.api_p12_file != "" ? "" : var.api_key
-  url          = var.api_url
+  VOLT_API_P12_FILE = var.VOLT_API_P12_FILE
+  api_cert          = var.VOLT_API_P12_FILE != "" ? "" : var.api_cert
+  api_key           = var.VOLT_API_P12_FILE != "" ? "" : var.api_key
+  url               = var.api_url
 }
 
 provider "http" {
 }
 
 provider "libvirt" {
-  uri            = var.libvirt_uri
+  uri               = var.libvirt_uri
 }
 
