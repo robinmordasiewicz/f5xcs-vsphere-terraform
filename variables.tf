@@ -3,6 +3,7 @@ variable "cluster_size" {
   description = "REQUIRED:  Set Cluster Size, options are 1 or 3 today."
   default     = 3
 }
+
 variable "hostnames" {
   description    = "Create these hosts"
   type           = list(string)
@@ -12,67 +13,67 @@ variable "hostnames" {
 variable "libvirt_admin" {
   type        = string
 }
+
 variable "libvirt_ip" {
   type        = string
 }
+
 variable "VOLT_API_P12_FILE" {
   type        = string
 }
 
-variable "libvirt_uri" {
+variable "VES_P12_PASSWORD" {
   type        = string
-  description = "REQUIRED: credentials for KVM"
-  default     = "qemu+ssh://robin@192.168.1.95/system?sshauth=privkey&no_verify=1"
 }
+
+variable "tenant" {
+  type        = string
+}
+
 variable "datacenter" {
   type        = string
   description = "REQUIRED:  Provide a Datacenter Name."
   default     = "Default Datacenter"
 }
-# Virtual Machine configuration
 
-# Outside Network
 variable "outside_network" {
   type        = string
   description = "REQUIRED:  Provide a Name for the Outside Interface Network. [ SLO ]"
   default     = "SLO"
 }
+
 variable "inside_network" {
   type        = string
   description = "REQUIRED:  Provide a Name for the Inside Interface Network. [ SLI ]"
   default     = "SLI"
 }
-# VM Number of CPU's
+
 variable "cpus" {
   type        = number
   description = "REQUIRED:  Provide a vCPU count.  [ Not Less than 4, and do not limit each instance less than 2.9GHz ]"
   default     = 4
 }
-# VM Memory in MB
+
 variable "memory" {
   type        = number
   description = "REQUIRED:  Provide RAM in Mb.  [ Not Less than 14336Mb ]"
   default     = 16384
 }
-#OVA Path
+
 variable "xcovapath" {
   type        = string
   default     = "/home/michael/Downloads/centos-7.2009.10-202107041731.ova"
 }
-#Guest Type
+
 variable "guest_type" {
   type        = string
   default     = "other3xLinux64Guest"
 }
 
-## XC Values
-// Required Variable
 variable "projectName" {
   type        = string
   default     = "project-name"
 }
-
-variable "tenant" {}
 
 variable "certifiedhardware" {
   type        = string
@@ -172,19 +173,19 @@ variable "namespace" {
   default     = "namespace"
 }
 
-variable "api_cert" {
+variable "VOLT_API_CERT" {
   type        = string
   description = "REQUIRED:  This is the path to the volterra API Key.  See https://volterra.io/docs/how-to/user-mgmt/credentials"
   default     = "./api2.cer"
 }
 
-variable "api_key" {
+variable "VOLT_API_KEY" {
   type        = string
   description = "REQUIRED:  This is the path to the volterra API Key.  See https://volterra.io/docs/how-to/user-mgmt/credentials"
   default     = "./api.key"
 }
 
-variable "api_url" {
+variable "VOLT_API_URL" {
   type        = string
   description = "REQUIRED:  This is your volterra API url"
   default     = "https://acme-corp.console.ves.volterra.io/api"

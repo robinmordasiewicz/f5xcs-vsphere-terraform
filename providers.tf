@@ -1,13 +1,13 @@
 terraform {
   required_version = ">= 0.13"
   required_providers {
-    libvirt = {
-      source     = "dmacvicar/libvirt"
-      version    = "0.7.1"
-    }
     volterra = {
       source = "volterraedge/volterra"
       version = "0.11.19"
+    }
+    libvirt = {
+      source     = "dmacvicar/libvirt"
+      version    = "0.7.1"
     }
   }
 }
@@ -19,10 +19,6 @@ provider "volterra" {
   url               = var.api_url
 }
 
-provider "http" {
-}
-
 provider "libvirt" {
-  uri               = var.libvirt_uri
+  uri     = "qemu+ssh://${var.libvirt_admin}@${var.libvirt_ip}/system?sshauth=privkey&no_verify=1"
 }
-

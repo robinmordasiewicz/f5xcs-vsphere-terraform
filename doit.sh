@@ -28,6 +28,5 @@ fi
 
 export TF_VAR_VOLT_API_P12_FILE=./creds/.api-creds.p12
 
-echo $TF_VAR_tenant
 terraform init
 terraform plan

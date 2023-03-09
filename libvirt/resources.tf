@@ -59,7 +59,3 @@ resource "libvirt_domain" "volterradomain" {
   }
 }
 
-output "name" {
-  value = libvirt_domain.volterradomain[*].name
-}
-

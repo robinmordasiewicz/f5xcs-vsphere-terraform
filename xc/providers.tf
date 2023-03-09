@@ -9,9 +9,8 @@ terraform {
 }
 
 provider "volterra" {
-  VOLT_API_P12_FILE = var.VOLT_API_P12_FILE
-  api_cert          = var.VOLT_API_P12_FILE != "" ? "" : var.api_cert
-  api_key           = var.VOLT_API_P12_FILE != "" ? "" : var.api_key
-  url               = var.api_url
+  api_p12_file      = var.VOLT_API_P12_FILE
+  api_cert          = var.VOLT_API_CERT != "" ? "" : var.VOLT_API_CERT
+  api_key           = var.VOLT_API_KEY != "" ? "" : var.VOLT_API_KEY
+  url               = var.VOLT_API_URL
 }
-
