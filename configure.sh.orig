@@ -1,6 +1,5 @@
 #!/bin/bash
 #
-
 #terraform destroy -auto-approve
 
 if [[ -z "${TF_VAR_VES_P12_PASSWORD}" ]]; then

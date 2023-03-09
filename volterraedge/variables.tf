@@ -5,8 +5,9 @@ variable "VES_P12_PASSWORD" {}
 variable "namespace" {}
 variable "projectName" {}
 variable "projectPrefix" {}
-variable "sitename" {}
+variable "clustername" {}
 variable "tenant" {}
 variable "hostnames" {}
-variable "sitelatitude" {}
-variable "sitelongitude" {}
+variable "latitude" {}
+variable "longitude" {}
+variable "token" {}

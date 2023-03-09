@@ -1,5 +1,5 @@
 
-resource "volterra_k8s_cluster" "cluster" {
+resource "volterra_k8s_cluster" "appstack-k8s" {
   name                              = "acmecorp-web"
   namespace                         = "system"
   no_cluster_wide_apps              = true
@@ -10,38 +10,35 @@ resource "volterra_k8s_cluster" "cluster" {
   global_access_enable              = true
   #no_insecure_registries            = true
   insecure_registry_list {
-    insecure_registries = ["example.com:5000"]
+    insecure_registries    = ["example.com:5000"]
   }
-
   local_access_config {
-    local_domain                    = "example.com"
-    default_port                    = true
+    local_domain           = "example.com"
+    default_port           = true
   }
-  use_default_psp                   = true
+  use_default_psp          = true
 }
 
-resource "volterra_voltstack_site" "libvirt_cluster_multi" {
-  name            = "acmecorp-web"
-  namespace       = "system"
-
+resource "volterra_voltstack_site" "appstack-k8s" {
+  name                     = "acmecorp-web"
+  depends_on = [
+    volterra_k8s_cluster.appstack-k8s
+  ]
+  namespace                = "system"
   default_blocked_services = true
-  no_bond_devices = true
-  disable_gpu     = true
-
+  no_bond_devices          = true
+  disable_gpu              = true
   k8s_cluster {
-    namespace     = "system"
-    name          = "acmecorp-web"
+    namespace              = "system"
+    name                   = "acmecorp-web"
   }
-
-  #master_nodes = [var.hostnames["nodeone"], var.hostnames["nodetwo"], var.hostnames["nodethree"]]
-  master_nodes = ["main01","main02","main03"]
-
-  logs_streaming_disabled = true
-  default_network_config  = true
-  default_storage_config  = true
-  deny_all_usb            = true
-  volterra_certified_hw   = "kvm-voltstack-combo"
-  address = "26 Margueretta Street Toronto Ontario"
+  master_nodes             = ["main01","main02","main03"]
+  logs_streaming_disabled  = true
+  default_network_config   = true
+  default_storage_config   = true
+  deny_all_usb             = true
+  volterra_certified_hw    = "kvm-voltstack-combo"
+  address                  = "26 Margueretta Street Toronto Ontario"
   coordinates {
     latitude = 43.650757
     longitude = -79.43744

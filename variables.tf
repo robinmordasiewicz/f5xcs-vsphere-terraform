@@ -68,12 +68,12 @@ variable "certifiedhardware" {
   default     = "kvm-voltstack-combo"
 }
 
-variable "sitelatitude" {
+variable "latitude" {
   type        = string
   default     = "30"
 }
 
-variable "sitelongitude" {
+variable "longitude" {
   type        = string
   default     = "-75"
 }
@@ -91,14 +91,9 @@ variable "clustername" {
   default     = "coleman-libvirt-cluster"
 }
 
-variable "sitetoken" {
+variable "token" {
   type        = string
   default     = "12345678910"
-}
-
-variable "sitename" {
-  type        = string
-  default     = "adrastea"
 }
 
 variable "namespace" {

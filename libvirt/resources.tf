@@ -1,8 +1,8 @@
 # genisoimage -output cidata.iso -V cidata -r -J user-data meta-data
 
-data "template_file" "user_data" {
-  template = file("${path.module}/cloudinit.yaml")
-}
+#data "template_file" "user_data" {
+#  template = file("${path.module}/cloudinit.yml")
+#}
 
 resource "libvirt_pool" "cluster" {
   name = "xccluster"
@@ -11,8 +11,17 @@ resource "libvirt_pool" "cluster" {
 }
 
 resource "libvirt_cloudinit_disk" "cloudinit" {
-  name           = "xc-cloudinit.iso"
-  user_data      = templatefile("${path.module}/cloudinit.yml", {})
+  count          = length(var.hostnames)
+  name           = "${var.hostnames[count.index]}-cloudinit.iso"
+  user_data      = templatefile("${path.module}/cloudinit.yml",
+                                 {
+                                   token       = "${var.token}",
+                                   clustername = "${var.clustername}",
+                                   latitude    = "${var.latitude}",
+                                   longitude   = "${var.longitude}",
+                                   hostname    = var.hostnames[count.index]
+                                 }
+                               )
   pool           = "xccluster"
 }
 

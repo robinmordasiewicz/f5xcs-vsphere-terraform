@@ -23,9 +23,10 @@ write_files:
       Vpm:
         ClusterName: ${clustername}
         ClusterType: ce
-        Token: ${sitetoken}
-        Latitude: ${sitelatitude}
-        Longitude: ${sitelongitude}
+        Token: ${token}
+        Latitude: ${latitude}
+        Longitude: ${longitude}
+        Hostname: ${hostname}
         MauricePrivateEndpoint: https://register-tls.ves.volterra.io
         MauriceEndpoint: https://register.ves.volterra.io
         CertifiedHardwareEndpoint: https://vesio.blob.core.windows.net/releases/certified-hardware/aws.yml
