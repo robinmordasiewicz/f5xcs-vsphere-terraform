@@ -1,24 +1,32 @@
 # genisoimage -output cidata.iso -V cidata -r -J user-data meta-data
 
-#resource "libvirt_cloudinit_disk" "cloudinit" {
-#  name           = "/var/lib/libvirt/images/iso/xc-cloudinit.iso"
-#  #name           = "iso/xc-cloudinit.iso"
-#  user_data      = templatefile("${path.module}/cloudinit.yml", {})
-#  pool           = "default"
-#}
+data "template_file" "user_data" {
+  template = file("${path.module}/cloudinit.yaml")
+}
+
+resource "libvirt_pool" "cluster" {
+  name = "xccluster"
+  type = "dir"
+  path = "/var/lib/libvirt/xcimages"
+}
+
+resource "libvirt_cloudinit_disk" "cloudinit" {
+  name           = "xc-cloudinit.iso"
+  user_data      = templatefile("${path.module}/cloudinit.yml", {})
+  pool           = "xccluster"
+}
 
 resource "libvirt_volume" "volterra" {
   name           = "volterra-qcow2"
-  pool           = "default"
-  source         = "/var/lib/libvirt/images/templates/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030.qcow2"
-  #source         = "templates/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030.qcow2"
+  pool           = "xccluster"
+  source         = "/tmp/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030.qcow2"
   format         = "qcow2"
 }
 
 resource "libvirt_volume" "diskimage" {
   count          = length(var.hostnames)
   name           = var.hostnames[count.index]
-  pool           = "default"
+  pool           = "xccluster"
   size           = 107374182400
   base_volume_id = libvirt_volume.volterra.id
   format         = "qcow2"
@@ -67,4 +75,3 @@ resource "libvirt_domain" "volterradomain" {
     autoport     = "true"
   }
 }
-
