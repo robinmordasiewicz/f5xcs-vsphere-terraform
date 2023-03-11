@@ -1,13 +1,3 @@
-terraform {
-  required_version = ">= 0.13"
-  required_providers {
-    volterra = {
-      source = "volterraedge/volterra"
-      version = "0.11.19"
-    }
-  }
-}
-
 provider "volterra" {
   api_p12_file     = var.VOLT_API_P12_FILE
 #api_cert          = var.VOLT_API_CERT != "" ? "" : var.VOLT_API_CERT

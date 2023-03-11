@@ -32,7 +32,8 @@ export TF_VAR_VOLT_API_P12_FILE="./creds/jpmc.console.ves.volterra.io.api-creds.
 
 terraform providers lock -platform=linux_amd64
 terraform init
-terraform init -upgrade
+#terraform init -upgrade
 terraform plan
 #terraform destroy -auto-approve
 terraform apply -auto-approve
+

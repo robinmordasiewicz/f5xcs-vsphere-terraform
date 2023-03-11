@@ -1,5 +1,4 @@
 #cloud-config
-# vim: syntax=yaml
 users:
   - name: vesop
     shell: /bin/bash
@@ -7,32 +6,41 @@ users:
     lock_passwd: false
     no_create_home: true
     no_user_group: true
-runcmd:
-  - mkdir -p /usr/local/var/run
-  - wget https://github.com/alexgit2k/qemu-guest-agent-static/raw/master/qemu-ga-static-3.1.0-1.x86_64.rpm -O /root/qemu-ga-static-3.1.0-1.x86_64.rpm
-  - wget https://github.com/alexgit2k/qemu-guest-agent-static/raw/master/3.1.0/usr/local/bin/qemu-ga
-  - cd / && rpm2cpio /root/qemu-ga-static-3.1.0-1.x86_64.rpm | cpio -idmv
-  - ln -s /etc/init.d/qemu-ga /etc/rc3.d/S20qemu-ga
-  - /etc/init.d/qemu-ga start
+coreos:
+  update:
+    reboot-strategy: "off"
 write_files:
   - path: /etc/vpm/config.yaml
     permissions: 0644
     owner: root
-    encoding: text/plain
     content: |
+      Kubernetes:
+        EtcdUseTLS: true
+        Server: vip
       Vpm:
+        CertifiedHardware: kvm-voltstack-combo
         ClusterName: ${clustername}
         ClusterType: ce
-        Token: ${token}
+        Config: /etc/vpm/config.yaml
+        Hostname: ${hostname}
         Latitude: ${latitude}
         Longitude: ${longitude}
-        Hostname: ${hostname}
-        MauricePrivateEndpoint: https://register-tls.ves.volterra.io
         MauriceEndpoint: https://register.ves.volterra.io
-        CertifiedHardwareEndpoint: https://vesio.blob.core.windows.net/releases/certified-hardware/aws.yml
-
-      Kubernetes:
-        CloudProvider: ""
-        EtcdUseTLS: True
-        Server: vip
-
+        MauricePrivateEndpoint: https://register-tls.ves.volterra.io
+        Proxy: {}
+        Token: ${token}
+  - path: /etc/vpm/certified-hardware.yaml
+    permissions: 0644
+    owner: root
+    content: |
+      active: kvm-voltstack-combo
+      certifiedHardware:
+        kvm-voltstack-combo:
+          Vpm:
+            PrivateNIC: eth0
+          outsideNic:
+          - eth0
+      primaryOutsideNic: eth0
+runcmd:
+  - [ sh, -c, test -e /usr/bin/fsextend  && /usr/bin/fsextend || true ]
+hostname: ${hostname}

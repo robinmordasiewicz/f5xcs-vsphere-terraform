@@ -1,6 +1,6 @@
 
-resource "volterra_k8s_cluster" "appstack-k8s" {
-  name                              = "acmecorp-web"
+resource "volterra_k8s_cluster" "appstackk8s" {
+  name                              = var.clustername
   namespace                         = "system"
   no_cluster_wide_apps              = true
   use_default_cluster_role_bindings = true
@@ -19,10 +19,10 @@ resource "volterra_k8s_cluster" "appstack-k8s" {
   use_default_psp          = true
 }
 
-resource "volterra_voltstack_site" "appstack-k8s" {
-  name                     = "acmecorp-web"
+resource "volterra_voltstack_site" "appstacksite" {
+  name                     = var.clustername
   depends_on = [
-    volterra_k8s_cluster.appstack-k8s
+    volterra_k8s_cluster.appstackk8s
   ]
   namespace                = "system"
   default_blocked_services = true
@@ -30,18 +30,18 @@ resource "volterra_voltstack_site" "appstack-k8s" {
   disable_gpu              = true
   k8s_cluster {
     namespace              = "system"
-    name                   = "acmecorp-web"
+    name                   = var.clustername
   }
   master_nodes             = ["main01","main02","main03"]
   logs_streaming_disabled  = true
   default_network_config   = true
   default_storage_config   = true
   deny_all_usb             = true
-  volterra_certified_hw    = "kvm-voltstack-combo"
+  volterra_certified_hw    = "kvm-volstack-combo"
   address                  = "26 Margueretta Street Toronto Ontario"
   coordinates {
-    latitude = 43.650757
-    longitude = -79.43744
+    latitude = var.latitude
+    longitude = var.longitude
   }
   offline_survivability_mode {
       enable_offline_survivability_mode = true

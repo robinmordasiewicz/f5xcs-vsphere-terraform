@@ -1,6 +1,6 @@
 variable "hostnames" {
   type           = list(string)
-  default        = ["mains01", "mains02", "mains03"]
+  default        = ["main01", "main02", "main03"]
 }
 
 variable "libvirt_admin" {
@@ -70,12 +70,12 @@ variable "certifiedhardware" {
 
 variable "latitude" {
   type        = string
-  default     = "30"
+  default     = "43.650757"
 }
 
 variable "longitude" {
   type        = string
-  default     = "-75"
+  default     = "-79.43744"
 }
 
 variable "dnsservers" {
@@ -88,12 +88,12 @@ variable "dnsservers" {
 
 variable "clustername" {
   type        = string
-  default     = "coleman-libvirt-cluster"
+  default     = "acmecorp-web"
 }
 
 variable "token" {
   type        = string
-  default     = "12345678910"
+  default     = "4afa7fbe-bf1c-4a2e-9092-0c15cc745c12"
 }
 
 variable "namespace" {

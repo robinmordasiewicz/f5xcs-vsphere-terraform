@@ -20,7 +20,7 @@
     <xsl:template match="domain/devices/*[1]">
 		<disk type="file" device="cdrom">
   <driver name="qemu" type="raw"/>
-  <source file="/var/lib/libvirt/xcimages/xc-cloudinit.iso" />
+  <source file="${cloudinitiso}" />
   <backingStore/>
   <target dev="sda" bus="sata"/>
   <readonly/>

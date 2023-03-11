@@ -1,6 +1,6 @@
 variable "hostnames" {
   type    = list(string)
-  default = ["mains01", "mains02", "mains03"]
+  default = ["main01", "main02", "main03"]
 }
 variable "libvirt_admin" {
   type    = string
