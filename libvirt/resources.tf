@@ -12,7 +12,12 @@ resource "libvirt_cloudinit_disk" "cloudinit" {
   ]
   count          = length(var.hostnames)
   name           = "${var.hostnames[count.index]}-cloudinit.iso"
-  user_data      = templatefile("${path.module}/cloudinit.yml",
+  meta_data      = templatefile("${path.module}/cloudinit/meta-data.tpl",
+                                 {
+                                   hostname    = var.hostnames[count.index]
+                                 }
+                               )
+  user_data      = templatefile("${path.module}/cloudinit/user-data.tpl",
                                  {
                                    token       = "${var.token}",
                                    clustername = "${var.clustername}",
@@ -55,7 +60,7 @@ resource "libvirt_domain" "volterradomain" {
   name           = var.hostnames[count.index]
   description    = "F5 Distributed Cloud"
   memory         = "16384"
-  machine        = "pc-q35-6.2"
+  machine        = "q35"
 
   xml {
    # xslt         = file("${path.module}/machine.xsl")
