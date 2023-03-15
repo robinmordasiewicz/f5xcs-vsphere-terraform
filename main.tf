@@ -13,6 +13,7 @@ module "libvirt" {
   longitude         = var.longitude
   token             = var.token
   clustername       = var.clustername
+  qcow2             = var.qcow2
 }
 
 module "volterraedge" {
@@ -23,12 +24,8 @@ module "volterraedge" {
 #    module.libvirt.vm3
 #  ]
   VES_P12_PASSWORD  = var.VES_P12_PASSWORD
-  VOLT_API_KEY      = var.VOLT_API_KEY
-  VOLT_API_CERT     = var.VOLT_API_CERT
   VOLT_API_P12_FILE = var.VOLT_API_P12_FILE
   namespace         = var.namespace
-  projectName       = var.projectName
-  projectPrefix     = module.util.env_prefix
   tenant            = var.tenant
   clustername       = var.clustername
   hostnames         = var.hostnames

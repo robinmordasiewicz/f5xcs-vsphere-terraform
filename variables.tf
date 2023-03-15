@@ -19,36 +19,18 @@ variable "VES_P12_PASSWORD" {
   type        = string
 }
 
-variable "VOLT_API_CERT" {
-  type        = string
-  default     = "./api.cer"
-}
-
-variable "VOLT_API_KEY" {
-  type        = string
-  default     = "./api.key"
-}
-
 variable "tenant" {
   type        = string
 }
 
-variable "datacenter" {
+variable "qcow2" {
   type        = string
-  default     = "Default Datacenter"
+  default     = "https://downloads.volterra.io/releases/images/2021-03-01/centos-7.2009.5-202103011045.qcow2"
+  #default    = "/var/lib/libvirt/templates/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030.qcow2"
+  #default     = "/var/lib/libvirt/templates/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202302150737.1676454355/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202302150737.1676454355.qcow2"
 }
 
-variable "outside_network" {
-  type        = string
-  default     = "SLO"
-}
-
-variable "inside_network" {
-  type        = string
-  default     = "SLI"
-}
-
-variable "cpus" {
+variable "cpu" {
   type        = number
   default     = 4
 }
@@ -56,11 +38,6 @@ variable "cpus" {
 variable "memory" {
   type        = number
   default     = 16384
-}
-
-variable "projectName" {
-  type        = string
-  default     = "project-name"
 }
 
 variable "certifiedhardware" {

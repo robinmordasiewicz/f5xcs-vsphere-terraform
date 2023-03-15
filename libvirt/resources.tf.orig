@@ -60,33 +60,47 @@ resource "libvirt_domain" "volterradomain" {
   count          = length(var.hostnames)
   name           = var.hostnames[count.index]
   description    = "F5 Distributed Cloud"
-  memory = var.memory
-  vcpu   = var.cpu
+  memory         = "16384"
+  machine        = "q35"
+
+  xml {
+   # xslt         = file("${path.module}/machine.xsl")
+    xslt         = templatefile("${path.module}/machine.xsl",
+                                 {
+                                   cloudinitiso = "/var/lib/libvirt/${var.clustername}/${var.hostnames[count.index]}-cloudinit.iso"
+                                 }
+                               )
+  }
+  vcpu           = 4
+  qemu_agent     = true
+
+  network_interface {
+    macvtap      = "enp109s0"
+  }
+ 
+  cpu {
+    mode         = "host-passthrough"
+  }
+
+  console {
+    type         = "pty"
+    target_port  = "0"
+    target_type  = "serial"
+  }
+
+  console {
+    type         = "pty"
+    target_type  = "virtio"
+    target_port  = "1"
+  }
 
   disk {
     volume_id    = element(libvirt_volume.diskimage[*].id, count.index)
   }
 
-  cpu {
-    mode = "host-passthrough"
+  graphics {
+    type         = "spice"
+    listen_type  = "address"
+    autoport     = "true"
   }
-
-  #cloudinit = var.hostnames[count.index].id
-  #cloudinit = libvirt_cloudinit_disk.cloudinit.[count.index].id
-  cloudinit = element(libvirt_cloudinit_disk.cloudinit[*].id, count.index)
-
-  network_interface {
-    network_name = "default"
-  }
-
-  console {
-    type        = "pty"
-    target_type = "serial"
-    target_port = "0"
-  }
-
-#  network_interface {
-#    macvtap      = "enp109s0"
-#  }
- 
 }

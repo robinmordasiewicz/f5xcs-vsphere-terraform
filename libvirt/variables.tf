@@ -22,3 +22,12 @@ variable "latitude" {
 variable "longitude" {
   type    = string
 }
+variable "qcow2" {
+  type    = string
+}
+variable "memory" {
+  default = 16389
+}
+variable "cpu" {
+  default = 4
+}
