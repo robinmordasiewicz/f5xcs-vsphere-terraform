@@ -1,11 +1,12 @@
+
 data "template_file" "user_data" {
   template = file("${path.module}/cloudinit/user-data.tpl")
   vars = {
-    "token"             = var.token
-    "clustername"                        = var.clustername
-    "hostname"                           = var.hostname
-    "latitude"                            = var.latitude
-    "longitude"                           = var.longitude
+    "token"       = volterra_token.site-token.id
+    "clustername" = var.clustername
+    "hostname"    = var.hostname
+    "latitude"    = var.latitude
+    "longitude"   = var.longitude
   }
 }
 

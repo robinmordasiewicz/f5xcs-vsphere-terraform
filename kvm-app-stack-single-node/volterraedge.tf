@@ -1,18 +1,23 @@
+resource "volterra_token" "site-token" {
+  name      = "site-token"
+  namespace = "system"
+}
+
 data "volterra_namespace" "system" {
   name = "system"
 }
 
 resource "volterra_k8s_cluster_role" "allow_all" {
   #name        = format("%s-allow-all", var.k8scluster)
-  name        = "admin"
-  namespace   = data.volterra_namespace.system.name
+  name      = "admin"
+  namespace = data.volterra_namespace.system.name
 
   policy_rule_list {
     policy_rule {
       resource_list {
-        api_groups      = ["*"]
-        resource_types  = ["*"]
-        verbs           = ["*"]
+        api_groups     = ["*"]
+        resource_types = ["*"]
+        verbs          = ["*"]
       }
     }
   }
@@ -20,8 +25,8 @@ resource "volterra_k8s_cluster_role" "allow_all" {
 
 resource "volterra_k8s_cluster_role_binding" "argocd_crb1" {
   #name        = format("%s-argocd1-cluster-role-binding", var.k8scluster)
-  name = "argocd-crb1"
-  namespace   = data.volterra_namespace.system.name
+  name      = "argocd-crb1"
+  namespace = data.volterra_namespace.system.name
 
   k8s_cluster_role {
     name      = volterra_k8s_cluster_role.allow_all.name
@@ -30,7 +35,7 @@ resource "volterra_k8s_cluster_role_binding" "argocd_crb1" {
 
   subjects {
     service_account {
-      name = "argocd-application-controller"
+      name      = "argocd-application-controller"
       namespace = data.volterra_namespace.system.name
     }
   }
@@ -38,8 +43,8 @@ resource "volterra_k8s_cluster_role_binding" "argocd_crb1" {
 
 resource "volterra_k8s_cluster_role_binding" "argocd_crb2" {
   #name        = format("%s-argocd2-cluster-role-binding", var.k8scluster)
-  name = "argocd-crb2"
-  namespace   = data.volterra_namespace.system.name
+  name      = "argocd-crb2"
+  namespace = data.volterra_namespace.system.name
 
   k8s_cluster_role {
     name      = volterra_k8s_cluster_role.allow_all.name
@@ -54,8 +59,8 @@ resource "volterra_k8s_cluster_role_binding" "argocd_crb2" {
 
 resource "volterra_k8s_cluster" "pk8s_cluster" {
   #name        = format("%s-pk8s-cluster", var.clustername)
-  name        = var.k8scluster
-  namespace   = data.volterra_namespace.system.name
+  name      = var.k8scluster
+  namespace = data.volterra_namespace.system.name
 
   local_access_config {
     local_domain = "${var.clustername}.local"
@@ -69,7 +74,7 @@ resource "volterra_k8s_cluster" "pk8s_cluster" {
     }
 
     cluster_roles {
-      name      = "ves-io-admin-cluster-role"
+      name = "ves-io-admin-cluster-role"
       #namespace = data.volterra_namespace.system.name
       namespace = "shared"
       tenant    = "ves-io"
@@ -98,15 +103,15 @@ resource "volterra_voltstack_site" "pk8s_voltstack_site" {
   depends_on = [
     volterra_k8s_cluster.pk8s_cluster
   ]
-  name                  = var.clustername
-  namespace             = data.volterra_namespace.system.name
+  name      = var.clustername
+  namespace = data.volterra_namespace.system.name
   #labels = ["ves.io/provider=ves-io-VMWARE"]
   labels = {
-      "ves.io/provider" = "ves-io-VMWARE"
+    "ves.io/provider" = "ves-io-VMWARE"
   }
 
   volterra_certified_hw = "kvm-voltstack-combo"
-  master_nodes          = [ "${var.hostname}" ]
+  master_nodes          = ["${var.hostname}"]
 
   k8s_cluster {
     name      = volterra_k8s_cluster.pk8s_cluster.name
@@ -134,8 +139,9 @@ resource "volterra_voltstack_site" "pk8s_voltstack_site" {
   deny_all_usb            = true
 }
 
+
 resource "volterra_registration_approval" "node-registration" {
-  depends_on   = [ libvirt_domain.kvm-app-stack ]
+  depends_on = [libvirt_domain.kvm-app-stack]
 
   cluster_name = var.clustername
   hostname     = var.hostname
