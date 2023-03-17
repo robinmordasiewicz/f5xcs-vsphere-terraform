@@ -127,7 +127,10 @@ resource "volterra_voltstack_site" "appstacksite" {
 }
 
 resource "volterra_registration_approval" "node-registration" {
-  depends_on   = [libvirt_domain.appstacksite.id]
+  #depends_on   = [libvirt_domain.volterradomain]
+  depends_on = [
+    volterra_voltstack_site.appstacksite
+  ]
   count        = length(var.hostnames)
   cluster_name = var.clustername
   hostname     = var.hostnames[count.index]
@@ -136,3 +139,6 @@ resource "volterra_registration_approval" "node-registration" {
   wait_time    = 300
 }
 
+output "token" {
+  value = volterra_token.site-token.id
+}

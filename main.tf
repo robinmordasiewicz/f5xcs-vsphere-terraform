@@ -6,8 +6,10 @@ module "util" {
 
 module "libvirt" {
   source             = "./libvirt"
-  libvirt_depends_on = module.volterraedge.volterra_token.site-token.id
-  token              = module.volterraedge.volterra_token.site-token.id
+  #libvirt_depends_on = module.volterraedge.volterra_token.site-token
+  #token              = module.volterraedge.volterra_token.site-token.id
+  libvirt_depends_on = module.volterraedge.token
+  token              = module.volterraedge.token
   hostnames          = var.hostnames
   libvirt_admin      = var.libvirt_admin
   libvirt_ip         = var.libvirt_ip
@@ -28,4 +30,5 @@ module "volterraedge" {
   latitude           = var.latitude
   longitude          = var.longitude
   token              = var.token
+  address            = var.address
 }

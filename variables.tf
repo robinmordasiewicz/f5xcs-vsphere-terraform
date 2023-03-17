@@ -82,4 +82,8 @@ variable "address" {
   type       = string
   default    = ""
 }
+variable "libvirt_depends_on" {
+  type = any
+  default = []
 
+}

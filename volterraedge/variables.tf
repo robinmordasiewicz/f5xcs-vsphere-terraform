@@ -6,4 +6,18 @@ variable "tenant" {}
 variable "hostnames" {}
 variable "latitude" {}
 variable "longitude" {}
-variable "token" {}
+variable "address" {
+  type = string
+}
+variable "token" {
+  type = any
+  default = []
+}
+variable "libvirt_domain" {
+  type = any
+  default = []
+}
+variable "volterradomain" {
+  type = any
+  default = []
+}
