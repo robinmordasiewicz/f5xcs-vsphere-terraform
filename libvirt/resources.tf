@@ -19,7 +19,7 @@ resource "libvirt_cloudinit_disk" "cloudinit" {
                                )
   user_data      = templatefile("${path.module}/cloudinit/user-data.tpl",
                                  {
-                                   token       = "${var.token}",
+                                   token       = volterra_token.site-token.id,
                                    clustername = "${var.clustername}",
                                    latitude    = "${var.latitude}",
                                    longitude   = "${var.longitude}",

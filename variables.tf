@@ -78,4 +78,8 @@ variable "namespace" {
   default     = "namespace"
 }
 
+variable "address" {
+  type       = string
+  default    = ""
+}
 
