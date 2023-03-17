@@ -1,15 +1,12 @@
 # genisoimage -output cidata.iso -V cidata -r -J user-data meta-data
 
-resource "libvirt_pool" "cluster" {
+resource "libvirt_pool" "pool" {
   name = var.clustername
   type = "dir"
   path = "/var/lib/libvirt/${var.clustername}"
 }
 
 resource "libvirt_cloudinit_disk" "cloudinit" {
-  depends_on = [
-    libvirt_pool.cluster
-  ]
   count          = length(var.hostnames)
   name           = "${var.hostnames[count.index]}-cloudinit.iso"
   meta_data      = templatefile("${path.module}/cloudinit/meta-data.tpl",
@@ -26,25 +23,17 @@ resource "libvirt_cloudinit_disk" "cloudinit" {
                                    hostname    = var.hostnames[count.index]
                                  }
                                )
-  pool           = var.clustername
+  pool           = libvirt_pool.pool.name
 }
 
 resource "libvirt_volume" "volterra" {
-  depends_on = [
-    libvirt_pool.cluster
-  ]
   name           = "volterra-qcow2"
-  pool           = var.clustername
-  #source         = "/var/lib/libvirt/templates/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202211040823.1667791030.qcow2"
-  #source         = "/var/lib/libvirt/templates/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202302150737.1676454355/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202302150737.1676454355.qcow2"
+  pool           = libvirt_pool.pool.name
   source         = var.qcow2
   format         = "qcow2"
 }
 
 resource "libvirt_volume" "diskimage" {
-  depends_on = [
-    libvirt_volume.volterra
-  ]
   count          = length(var.hostnames)
   name           = "${var.hostnames[count.index]}.qcow2"
   pool           = var.clustername
@@ -54,12 +43,9 @@ resource "libvirt_volume" "diskimage" {
 }
 
 resource "libvirt_domain" "volterradomain" {
-  depends_on = [
-    libvirt_volume.diskimage
-  ]
   count          = length(var.hostnames)
   name           = var.hostnames[count.index]
-  description    = "F5 Distributed Cloud"
+  description    = "F5 Distributed Cloud ${var.hostnames[count.index]}"
   memory = var.memory
   vcpu   = var.cpu
 
@@ -75,9 +61,9 @@ resource "libvirt_domain" "volterradomain" {
   #cloudinit = libvirt_cloudinit_disk.cloudinit.[count.index].id
   cloudinit = element(libvirt_cloudinit_disk.cloudinit[*].id, count.index)
 
-  network_interface {
-    network_name = "default"
-  }
+#  network_interface {
+#    network_name = "default"
+#  }
 
   console {
     type        = "pty"
@@ -85,8 +71,8 @@ resource "libvirt_domain" "volterradomain" {
     target_port = "0"
   }
 
-#  network_interface {
-#    macvtap      = "enp109s0"
-#  }
+  network_interface {
+    macvtap      = "enp109s0"
+  }
  
 }
