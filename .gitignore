@@ -32,3 +32,5 @@ override.tf.json
 volterra_gcp_vpc_role.yaml
 key.json
 **/key.json
+*.swp
+*.swo
