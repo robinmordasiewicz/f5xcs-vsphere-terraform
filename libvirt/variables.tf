@@ -1,6 +1,10 @@
-variable "hostnames" {
+variable "masternodes" {
   type    = list(string)
   default = ["main01", "main02", "main03"]
+}
+variable "workernodes" {
+  type    = list(string)
+  default = ["worker01", "worker02"]
 }
 variable "libvirt_admin" {
   type    = string

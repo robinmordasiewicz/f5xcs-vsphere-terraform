@@ -70,7 +70,6 @@ resource "volterra_k8s_cluster" "appstackk8s" {
 
     cluster_roles {
       name = "ves-io-admin-cluster-role"
-      #namespace = data.volterra_namespace.system.name
       namespace = "shared"
       tenant    = "ves-io"
     }

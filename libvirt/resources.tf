@@ -1,3 +1,6 @@
+locals {
+  hostnames = concat(var.masternodes, var.workernodes)
+}
 
 resource "libvirt_pool" "storagepool" {
   name = var.clustername
@@ -6,11 +9,11 @@ resource "libvirt_pool" "storagepool" {
 }
 
 resource "libvirt_cloudinit_disk" "cloudinit" {
-  count          = length(var.hostnames)
-  name           = "${var.hostnames[count.index]}-cloudinit.iso"
+  count          = length(local.hostnames)
+  name           = "${local.hostnames[count.index]}-cloudinit.iso"
   meta_data      = templatefile("${path.module}/cloudinit/meta-data.tpl",
                                  {
-                                   hostname    = var.hostnames[count.index]
+                                   hostname    = local.hostnames[count.index]
                                  }
                                )
   user_data      = templatefile("${path.module}/cloudinit/user-data.tpl",
@@ -19,28 +22,32 @@ resource "libvirt_cloudinit_disk" "cloudinit" {
                                    clustername = "${var.clustername}"
                                    latitude    = "${var.latitude}"
                                    longitude   = "${var.longitude}"
-                                   hostname    = var.hostnames[count.index]
+                                   hostname    = local.hostnames[count.index]
                                  }
                                )
   pool = libvirt_pool.storagepool.name
 }
 
 resource "libvirt_volume" "volume" {
-  count  = length(var.hostnames)
-  name   = "${var.hostnames[count.index]}.qcow2"
+  count  = length(local.hostnames)
+  name   = "${local.hostnames[count.index]}.qcow2"
   pool   = libvirt_pool.storagepool.name
   source = var.qcow2
   format = "qcow2"
 }
 
 resource "libvirt_domain" "kvm-app-stack" {
-  count      = length(var.hostnames)
-  name       = var.hostnames[count.index]
+  count      = length(local.hostnames)
+  name       = local.hostnames[count.index]
   memory     = var.memory
   vcpu       = var.cpu
   qemu_agent = false
   autostart  = true
   arch = "x86_64"
+
+  xml {
+    xslt = templatefile("${path.module}/machine.xsl", {})
+  }
 
   disk {
     volume_id    = element(libvirt_volume.volume[*].id, count.index)
