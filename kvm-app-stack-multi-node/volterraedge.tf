@@ -1,7 +1,3 @@
-locals {
-  hostnames = concat(var.masternodes, var.workernodes)
-}
-
 resource "volterra_token" "token" {
   name      = "token"
   namespace = "system"
@@ -154,8 +150,8 @@ resource "volterra_registration_approval" "approve-registration" {
   cluster_name = var.clustername
   hostname     = local.hostnames[count.index]
   cluster_size = length(local.hostnames)
-  retry        = 10
-  wait_time    = 31
+  retry        = 18
+  wait_time    = 11
 }
 
 output "token" {

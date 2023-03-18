@@ -24,6 +24,10 @@ locals {
   hostnames = concat(var.masternodes, var.workernodes)
 }
 
+variable "address" {
+  default = "26 Margueretta, Toronto Ontario"
+}
+
 variable "latitude" {
   default = "43.650757"
 }
