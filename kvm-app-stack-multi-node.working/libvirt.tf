@@ -1,3 +1,4 @@
+
 resource "libvirt_pool" "pool" {
   name = var.clustername
   type = "dir"
@@ -38,14 +39,10 @@ resource "libvirt_domain" "kvm-app-stack" {
   memory = var.memory
   vcpu   = var.vcpu
 
- # disk {
- #   volume_id = libvirt_volume.volume.id
- # }
   disk {
     volume_id    = element(libvirt_volume.volume[*].id, count.index)
   }
 
- # cloudinit = libvirt_cloudinit_disk.cloudinit.id
   cloudinit = element(libvirt_cloudinit_disk.cloudinit[*].id, count.index)
 
   cpu {
@@ -53,7 +50,7 @@ resource "libvirt_domain" "kvm-app-stack" {
   }
 
   network_interface {
-    network_name = "default"
+    macvtap      = "enp109s0"
   }
 
   console {

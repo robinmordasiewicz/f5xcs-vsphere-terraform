@@ -1,3 +1,3 @@
-output "ips" {
-  value = volterra_token.site-token.id
+output "token" {
+  value = volterra_token.token.id
 }

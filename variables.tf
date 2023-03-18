@@ -1,6 +1,6 @@
 variable "hostnames" {
-  type           = list(string)
-  default        = ["main01"]
+  type    = list(string)
+  default = ["mains01", "mains02", "mains03"]
 }
 
 variable "libvirt_admin" {
@@ -65,25 +65,29 @@ variable "dnsservers" {
 
 variable "clustername" {
   type        = string
-  default     = "acmecorp-web"
+  default     = "k8s01-tor"
 }
 
+variable "k8scluster" {
+  type        = string
+  default = "k8s-profile"
+}
+
+#variable "token" {
+#  type = any
+#  default = []
+#}
 variable "token" {
-  type        = string
-  default     = "4afa7fbe-bf1c-4a2e-9092-0c15cc745c12"
-}
-
-variable "namespace" {
-  type        = string
-  default     = "namespace"
+  type = string
+  default = "4afa7fbe-bf1c-4a2e-9092-0c15cc745c12"
 }
 
 variable "address" {
   type       = string
   default    = ""
 }
+
 variable "libvirt_depends_on" {
   type = any
   default = []
-
 }

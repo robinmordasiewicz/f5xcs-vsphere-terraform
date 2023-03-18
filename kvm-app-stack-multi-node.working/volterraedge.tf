@@ -1,16 +1,16 @@
+resource "volterra_token" "site-token" {
+  name      = "site-token"
+  namespace = "system"
+}
 
 data "volterra_namespace" "system" {
   name = "system"
 }
 
-resource "volterra_token" "token" {
-  name      = "token"
-  namespace = data.volterra_namespace.system.name
-}
-
 resource "volterra_k8s_cluster_role" "allow_all" {
   name      = "admin"
   namespace = data.volterra_namespace.system.name
+
   policy_rule_list {
     policy_rule {
       resource_list {
@@ -25,10 +25,12 @@ resource "volterra_k8s_cluster_role" "allow_all" {
 resource "volterra_k8s_cluster_role_binding" "argocd_crb1" {
   name      = "argocd-crb1"
   namespace = data.volterra_namespace.system.name
+
   k8s_cluster_role {
     name      = volterra_k8s_cluster_role.allow_all.name
     namespace = data.volterra_namespace.system.name
   }
+
   subjects {
     service_account {
       name      = "argocd-application-controller"
@@ -40,23 +42,22 @@ resource "volterra_k8s_cluster_role_binding" "argocd_crb1" {
 resource "volterra_k8s_cluster_role_binding" "argocd_crb2" {
   name      = "argocd-crb2"
   namespace = data.volterra_namespace.system.name
+
   k8s_cluster_role {
     name      = volterra_k8s_cluster_role.allow_all.name
     namespace = data.volterra_namespace.system.name
   }
+
   subjects {
     user = "admin"
   }
+
 }
 
-resource "volterra_k8s_cluster" "appstackk8s" {
-  name                              = var.clustername
-  namespace                         = "system"
-  no_cluster_wide_apps              = true
-  use_default_cluster_role_bindings = true
-  use_default_cluster_roles         = true
-  cluster_scoped_access_permit      = true
-  global_access_enable              = true
+resource "volterra_k8s_cluster" "pk8s_cluster" {
+  name      = var.k8scluster
+  namespace = data.volterra_namespace.system.name
+
   local_access_config {
     local_domain = "${var.clustername}.local"
     default_port = true
@@ -70,7 +71,6 @@ resource "volterra_k8s_cluster" "appstackk8s" {
 
     cluster_roles {
       name = "ves-io-admin-cluster-role"
-      #namespace = data.volterra_namespace.system.name
       namespace = "shared"
       tenant    = "ves-io"
     }
@@ -87,53 +87,64 @@ resource "volterra_k8s_cluster" "appstackk8s" {
     }
   }
 
-  insecure_registry_list {
-    insecure_registries    = ["example.com:5000"]
-  }
-  use_default_psp          = true
+  global_access_enable         = true
+  cluster_scoped_access_permit = true
+  no_cluster_wide_apps         = true
+  no_insecure_registries       = true
+  use_default_psp              = true
 }
 
-resource "volterra_voltstack_site" "appstacksite" {
-  name                     = var.clustername
+resource "volterra_voltstack_site" "pk8s_voltstack_site" {
   depends_on = [
-    volterra_k8s_cluster.appstackk8s
+    volterra_k8s_cluster.pk8s_cluster
   ]
+  name      = var.clustername
+  namespace = data.volterra_namespace.system.name
   labels = {
     "ves.io/provider" = "ves-io-VMWARE"
   }
-  namespace                = "system"
-  default_blocked_services = true
-  no_bond_devices          = true
-  disable_gpu              = true
+
+  volterra_certified_hw = "kvm-voltstack-combo"
+  master_nodes   = var.hostnames
+
   k8s_cluster {
-    namespace              = "system"
-    name                   = var.clustername
+    name      = volterra_k8s_cluster.pk8s_cluster.name
+    namespace = data.volterra_namespace.system.name
+    tenant    = data.volterra_namespace.system.tenant_name
   }
-  master_nodes             = var.hostnames
-  logs_streaming_disabled  = true
-  default_network_config   = true
-  default_storage_config   = true
-  deny_all_usb             = true
-  volterra_certified_hw    = "kvm-volstack-combo"
-  address                  = var.address
-  coordinates {
-    latitude = var.latitude
-    longitude = var.longitude
+
+  lifecycle {
+    ignore_changes = [labels]
   }
-  offline_survivability_mode {
-      enable_offline_survivability_mode = true
+
+  sw {
+    default_sw_version = true
   }
+
+  os {
+    default_os_version = true
+  }
+
+  no_bond_devices         = true
+  disable_gpu             = true
+  logs_streaming_disabled = true
+  default_network_config  = true
+  default_storage_config  = true
+  deny_all_usb            = true
 }
 
 resource "volterra_registration_approval" "node-registration" {
   depends_on = [
-    volterra_voltstack_site.appstacksite
+    volterra_voltstack_site.pk8s_voltstack_site
   ]
   count        = length(var.hostnames)
   cluster_name = var.clustername
   hostname     = var.hostnames[count.index]
   cluster_size = length(var.hostnames)
-  retry        = 10
-  wait_time    = 61
+  retry        = 5
+  wait_time    = 300
 }
 
+output "token" {
+  value = volterra_token.site-token.id
+}

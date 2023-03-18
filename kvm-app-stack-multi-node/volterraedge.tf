@@ -1,5 +1,5 @@
-resource "volterra_token" "site-token" {
-  name      = "site-token"
+resource "volterra_token" "token" {
+  name      = "token"
   namespace = "system"
 }
 
@@ -8,7 +8,6 @@ data "volterra_namespace" "system" {
 }
 
 resource "volterra_k8s_cluster_role" "allow_all" {
-  #name        = format("%s-allow-all", var.k8scluster)
   name      = "admin"
   namespace = data.volterra_namespace.system.name
 
@@ -24,7 +23,6 @@ resource "volterra_k8s_cluster_role" "allow_all" {
 }
 
 resource "volterra_k8s_cluster_role_binding" "argocd_crb1" {
-  #name        = format("%s-argocd1-cluster-role-binding", var.k8scluster)
   name      = "argocd-crb1"
   namespace = data.volterra_namespace.system.name
 
@@ -42,7 +40,6 @@ resource "volterra_k8s_cluster_role_binding" "argocd_crb1" {
 }
 
 resource "volterra_k8s_cluster_role_binding" "argocd_crb2" {
-  #name        = format("%s-argocd2-cluster-role-binding", var.k8scluster)
   name      = "argocd-crb2"
   namespace = data.volterra_namespace.system.name
 
@@ -58,7 +55,6 @@ resource "volterra_k8s_cluster_role_binding" "argocd_crb2" {
 }
 
 resource "volterra_k8s_cluster" "pk8s_cluster" {
-  #name        = format("%s-pk8s-cluster", var.clustername)
   name      = var.k8scluster
   namespace = data.volterra_namespace.system.name
 
@@ -75,7 +71,6 @@ resource "volterra_k8s_cluster" "pk8s_cluster" {
 
     cluster_roles {
       name = "ves-io-admin-cluster-role"
-      #namespace = data.volterra_namespace.system.name
       namespace = "shared"
       tenant    = "ves-io"
     }
@@ -105,13 +100,11 @@ resource "volterra_voltstack_site" "pk8s_voltstack_site" {
   ]
   name      = var.clustername
   namespace = data.volterra_namespace.system.name
-  #labels = ["ves.io/provider=ves-io-VMWARE"]
   labels = {
     "ves.io/provider" = "ves-io-VMWARE"
   }
 
   volterra_certified_hw = "kvm-voltstack-combo"
-  #master_nodes          = ["${var.hostname}"]
   master_nodes   = var.hostnames
 
   k8s_cluster {
@@ -141,7 +134,6 @@ resource "volterra_voltstack_site" "pk8s_voltstack_site" {
 }
 
 resource "volterra_registration_approval" "node-registration" {
-  #depends_on   = [libvirt_domain.volterradomain]
   depends_on = [
     volterra_voltstack_site.pk8s_voltstack_site
   ]
@@ -154,5 +146,5 @@ resource "volterra_registration_approval" "node-registration" {
 }
 
 output "token" {
-  value = volterra_token.site-token.id
+  value = volterra_token.token.id
 }

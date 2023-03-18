@@ -1,17 +1,16 @@
 variable "VOLT_API_P12_FILE" {}
 variable "VES_P12_PASSWORD" {}
-variable "namespace" {}
 variable "clustername" {}
+variable "k8scluster" {}
 variable "tenant" {}
 variable "hostnames" {}
 variable "latitude" {}
 variable "longitude" {}
-variable "address" {
-  type = string
-}
+variable "address" {}
+#variable "token" {}
 variable "token" {
-  type = any
-  default = []
+  type = string
+  default = "4afa7fbe-bf1c-4a2e-9092-0c15cc745c12"
 }
 variable "libvirt_domain" {
   type = any
