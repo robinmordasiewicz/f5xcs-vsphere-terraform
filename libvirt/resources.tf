@@ -40,6 +40,7 @@ resource "libvirt_domain" "kvm-app-stack" {
   vcpu       = var.cpu
   qemu_agent = false
   autostart  = true
+  arch = "x86_64"
 
   disk {
     volume_id    = element(libvirt_volume.volume[*].id, count.index)

@@ -61,15 +61,10 @@ resource "libvirt_domain" "volterradomain" {
   name           = var.hostnames[count.index]
   description    = "F5 Distributed Cloud"
   memory         = "16384"
-  machine        = "q35"
+  #machine        = "q35"
 
   xml {
-   # xslt         = file("${path.module}/machine.xsl")
-    xslt         = templatefile("${path.module}/machine.xsl",
-                                 {
-                                   cloudinitiso = "/var/lib/libvirt/${var.clustername}/${var.hostnames[count.index]}-cloudinit.iso"
-                                 }
-                               )
+    xslt         = file("${path.module}/machine.xsl")
   }
   vcpu           = 4
   qemu_agent     = true

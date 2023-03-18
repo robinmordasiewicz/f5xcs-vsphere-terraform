@@ -8,6 +8,9 @@ data "volterra_namespace" "system" {
 }
 
 resource "volterra_k8s_cluster_role" "allow_all" {
+  depends_on = [
+    libvirt_domain.kvmappstack
+  ]
   name      = "admin"
   namespace = data.volterra_namespace.system.name
 
@@ -105,7 +108,8 @@ resource "volterra_voltstack_site" "pk8s_voltstack_site" {
   }
 
   volterra_certified_hw = "kvm-voltstack-combo"
-  master_nodes   = var.hostnames
+  master_nodes   = var.masternodes
+  worker_nodes   = var.workernodes
 
   k8s_cluster {
     name      = volterra_k8s_cluster.pk8s_cluster.name
@@ -133,16 +137,28 @@ resource "volterra_voltstack_site" "pk8s_voltstack_site" {
   deny_all_usb            = true
 }
 
-resource "volterra_registration_approval" "node-registration" {
+resource "volterra_registration_approval" "masternode-registration" {
   depends_on = [
     volterra_voltstack_site.pk8s_voltstack_site
   ]
-  count        = length(var.hostnames)
+  count        = length(var.masternodes)
   cluster_name = var.clustername
-  hostname     = var.hostnames[count.index]
-  cluster_size = length(var.hostnames)
-  retry        = 5
-  wait_time    = 300
+  hostname     = var.masternodes[count.index]
+  cluster_size = length(var.masternodes)
+  retry        = 10
+  wait_time    = 31
+}
+
+resource "volterra_registration_approval" "workernode-registration" {
+  depends_on = [
+    volterra_voltstack_site.pk8s_voltstack_site
+  ]
+  count        = length(var.workernodes)
+  cluster_name = var.clustername
+  hostname     = var.workernodes[count.index]
+  cluster_size = length(var.workernodes)
+  retry        = 10
+  wait_time    = 31
 }
 
 output "token" {
