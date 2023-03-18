@@ -1,5 +1,3 @@
-
-
 resource "libvirt_pool" "pool" {
   name = var.clustername
   type = "dir"
@@ -20,7 +18,7 @@ resource "libvirt_cloudinit_disk" "cloudinit" {
                                    clustername = "${var.clustername}",
                                    latitude    = "${var.latitude}",
                                    longitude   = "${var.longitude}",
-                                   hostname    = local.hostnames[count.index]
+                                   hostname    = local.hostnames[count.index],
                                  }
                                )
   pool      = libvirt_pool.pool.name

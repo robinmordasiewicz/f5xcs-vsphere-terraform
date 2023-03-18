@@ -1,6 +1,3 @@
-locals {
-  hostnames = concat(var.masternodes, var.workernodes)
-}
 
 data "volterra_namespace" "system" {
   name = "system"
@@ -106,7 +103,7 @@ resource "volterra_voltstack_site" "appstacksite" {
   disable_gpu              = true
   k8s_cluster {
     namespace              = "system"
-    name                   = volterra_k8s_cluster.appstackk8s
+    name                   = volterra_k8s_cluster.appstackk8s.name
   }
   master_nodes             = var.masternodes
   worker_nodes             = var.workernodes
@@ -129,10 +126,10 @@ resource "volterra_registration_approval" "node-registration" {
   depends_on = [
     volterra_voltstack_site.appstacksite
   ]
-  count        = length(var.hostnames)
+  count        = length(local.hostnames)
   cluster_name = var.clustername
-  hostname     = var.hostnames[count.index]
-  cluster_size = length(var.hostnames)
+  hostname     = local.hostnames[count.index]
+  cluster_size = length(local.hostnames)
   retry        = 10
   wait_time    = 61
 }

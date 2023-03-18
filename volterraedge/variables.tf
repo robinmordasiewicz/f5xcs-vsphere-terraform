@@ -21,3 +21,6 @@ variable "volterradomain" {
   type = any
   default = []
 }
+locals {
+  hostnames = concat(var.masternodes, var.workernodes)
+}

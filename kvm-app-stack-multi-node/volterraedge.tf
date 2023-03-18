@@ -149,7 +149,7 @@ resource "volterra_registration_approval" "approve-registration" {
   count        = length(local.hostnames)
   cluster_name = var.clustername
   hostname     = local.hostnames[count.index]
-  cluster_size = length(local.hostnames)
+  cluster_size = length(var.masternodes)
   retry        = 18
   wait_time    = 11
 }
