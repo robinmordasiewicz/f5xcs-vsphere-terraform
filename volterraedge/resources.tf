@@ -1,3 +1,6 @@
+locals {
+  hostnames = concat(var.masternodes, var.workernodes)
+}
 
 data "volterra_namespace" "system" {
   name = "system"

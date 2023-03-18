@@ -3,7 +3,8 @@ variable "VES_P12_PASSWORD" {}
 variable "clustername" {}
 variable "k8scluster" {}
 variable "tenant" {}
-variable "hostnames" {}
+variable "masternodes" {}
+variable "workernodes" {}
 variable "latitude" {}
 variable "longitude" {}
 variable "address" {}

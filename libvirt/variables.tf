@@ -1,10 +1,6 @@
-variable "masternodes" {
+variable "hostnames" {
   type    = list(string)
-  default = ["main01", "main02", "main03"]
-}
-variable "workernodes" {
-  type    = list(string)
-  default = ["worker01", "worker02"]
+  default = []
 }
 variable "libvirt_admin" {
   type    = string
@@ -41,9 +37,5 @@ variable "cpu" {
 variable "qcow2" {
   #default = "https://downloads.volterra.io/releases/images/2021-03-01/centos-7.2009.5-202103011045.qcow2"
   default = "/var/lib/libvirt/templates/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202302150737.1676454355/vsb-ves-ce-certifiedhw-generic-production-centos-7.2009.27-202302150737.1676454355.qcow2"
-}
-
-variable "storagepool" {
-  default = "default"
 }
 

@@ -1,7 +1,3 @@
-locals {
-  hostnames = concat(var.masternodes, var.workernodes)
-}
-
 resource "libvirt_pool" "storagepool" {
   name = var.clustername
   type = "dir"
@@ -9,11 +5,11 @@ resource "libvirt_pool" "storagepool" {
 }
 
 resource "libvirt_cloudinit_disk" "cloudinit" {
-  count          = length(local.hostnames)
-  name           = "${local.hostnames[count.index]}-cloudinit.iso"
+  count          = length(var.hostnames)
+  name           = "${var.hostnames[count.index]}-cloudinit.iso"
   meta_data      = templatefile("${path.module}/cloudinit/meta-data.tpl",
                                  {
-                                   hostname    = local.hostnames[count.index]
+                                   hostname    = var.hostnames[count.index]
                                  }
                                )
   user_data      = templatefile("${path.module}/cloudinit/user-data.tpl",
@@ -22,23 +18,23 @@ resource "libvirt_cloudinit_disk" "cloudinit" {
                                    clustername = "${var.clustername}"
                                    latitude    = "${var.latitude}"
                                    longitude   = "${var.longitude}"
-                                   hostname    = local.hostnames[count.index]
+                                   hostname    = var.hostnames[count.index]
                                  }
                                )
   pool = libvirt_pool.storagepool.name
 }
 
 resource "libvirt_volume" "volume" {
-  count  = length(local.hostnames)
-  name   = "${local.hostnames[count.index]}.qcow2"
+  count  = length(var.hostnames)
+  name   = "${var.hostnames[count.index]}.qcow2"
   pool   = libvirt_pool.storagepool.name
   source = var.qcow2
   format = "qcow2"
 }
 
 resource "libvirt_domain" "kvm-app-stack" {
-  count      = length(local.hostnames)
-  name       = local.hostnames[count.index]
+  count      = length(var.hostnames)
+  name       = var.hostnames[count.index]
   memory     = var.memory
   vcpu       = var.cpu
   qemu_agent = false

@@ -10,8 +10,7 @@ module "libvirt" {
   #token              = module.volterraedge.volterra_token.token.id
   libvirt_depends_on = module.volterraedge.token
   token              = module.volterraedge.token
-  masternodes        = var.masternodes
-  workernodes        = var.workernodes
+  hostnames          = local.hostnames
   libvirt_admin      = var.libvirt_admin
   libvirt_ip         = var.libvirt_ip
   latitude           = var.latitude
