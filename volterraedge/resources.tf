@@ -94,9 +94,6 @@ resource "volterra_k8s_cluster" "appstackk8s" {
 
 resource "volterra_voltstack_site" "appstacksite" {
   name                     = var.clustername
-  depends_on = [
-    volterra_k8s_cluster.appstackk8s
-  ]
   labels = {
     "ves.io/provider" = "ves-io-VMWARE"
   }
@@ -106,9 +103,10 @@ resource "volterra_voltstack_site" "appstacksite" {
   disable_gpu              = true
   k8s_cluster {
     namespace              = "system"
-    name                   = var.clustername
+    name                   = volterra_k8s_cluster.appstackk8s
   }
-  master_nodes             = var.hostnames
+  master_nodes             = var.masternodes
+  worker_nodes             = var.workernodes
   logs_streaming_disabled  = true
   default_network_config   = true
   default_storage_config   = true
