@@ -1,7 +1,4 @@
 
-locals {
-  hostnames = concat(var.masternodes, var.workernodes)
-}
 
 resource "libvirt_pool" "pool" {
   name = var.clustername

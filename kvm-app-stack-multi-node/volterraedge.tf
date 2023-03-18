@@ -1,3 +1,7 @@
+locals {
+  hostnames = concat(var.masternodes, var.workernodes)
+}
+
 resource "volterra_token" "token" {
   name      = "token"
   namespace = "system"
@@ -98,9 +102,6 @@ resource "volterra_k8s_cluster" "pk8s_cluster" {
 }
 
 resource "volterra_voltstack_site" "pk8s_voltstack_site" {
-  depends_on = [
-    volterra_k8s_cluster.pk8s_cluster
-  ]
   name      = var.clustername
   namespace = data.volterra_namespace.system.name
   labels = {
@@ -128,6 +129,14 @@ resource "volterra_voltstack_site" "pk8s_voltstack_site" {
   os {
     default_os_version = true
   }
+  address                  = var.address
+  coordinates {
+    latitude = var.latitude
+    longitude = var.longitude
+  }
+  offline_survivability_mode {
+      enable_offline_survivability_mode = true
+  }
 
   no_bond_devices         = true
   disable_gpu             = true
@@ -137,26 +146,14 @@ resource "volterra_voltstack_site" "pk8s_voltstack_site" {
   deny_all_usb            = true
 }
 
-resource "volterra_registration_approval" "masternode-registration" {
+resource "volterra_registration_approval" "approve-registration" {
   depends_on = [
     volterra_voltstack_site.pk8s_voltstack_site
   ]
-  count        = length(var.masternodes)
+  count        = length(local.hostnames)
   cluster_name = var.clustername
-  hostname     = var.masternodes[count.index]
-  cluster_size = length(var.masternodes)
-  retry        = 10
-  wait_time    = 31
-}
-
-resource "volterra_registration_approval" "workernode-registration" {
-  depends_on = [
-    volterra_voltstack_site.pk8s_voltstack_site
-  ]
-  count        = length(var.workernodes)
-  cluster_name = var.clustername
-  hostname     = var.workernodes[count.index]
-  cluster_size = length(var.workernodes)
+  hostname     = local.hostnames[count.index]
+  cluster_size = length(local.hostnames)
   retry        = 10
   wait_time    = 31
 }

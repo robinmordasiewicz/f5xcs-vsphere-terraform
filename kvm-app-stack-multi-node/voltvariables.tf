@@ -20,6 +20,10 @@ variable "workernodes" {
   default = ["worker01" ]
 }
 
+locals {
+  hostnames = concat(var.masternodes, var.workernodes)
+}
+
 variable "latitude" {
   default = "43.650757"
 }
