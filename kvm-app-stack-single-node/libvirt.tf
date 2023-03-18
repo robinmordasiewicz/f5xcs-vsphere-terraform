@@ -1,52 +1,52 @@
-
-data "template_file" "user_data" {
-  template = file("${path.module}/cloudinit/user-data.tpl")
-  vars = {
-    "token"       = volterra_token.site-token.id
-    "clustername" = var.clustername
-    "hostname"    = var.hostname
-    "latitude"    = var.latitude
-    "longitude"   = var.longitude
-  }
+resource "libvirt_pool" "pool" {
+  name = var.clustername
+  type = "dir"
+  path = "/var/lib/libvirt/${var.clustername}"
 }
 
-data "template_file" "meta_data" {
-  template = file("${path.module}/cloudinit/meta-data.tpl")
-  vars = {
-    "hostname" = var.hostname
-  }
+resource "libvirt_cloudinit_disk" "cloudinit" {
+  count          = length(var.hostnames)
+  name           = "${var.hostnames[count.index]}-cloudinit.iso"
+  meta_data      = templatefile("${path.module}/cloudinit/meta-data.tpl",
+                                 {
+                                   hostname    = var.hostnames[count.index]
+                                 }
+                               )
+  user_data      = templatefile("${path.module}/cloudinit/user-data.tpl",
+                                 {
+                                   token       = volterra_token.site-token.id
+                                   clustername = "${var.clustername}",
+                                   latitude    = "${var.latitude}",
+                                   longitude   = "${var.longitude}",
+                                   hostname    = var.hostnames[count.index]
+                                 }
+                               )
+  pool           = libvirt_pool.pool.name
 }
 
 resource "libvirt_volume" "volume" {
-  depends_on = [
-    libvirt_cloudinit_disk.cloudinit
-  ]
-  name   = "${var.clustername}-${var.hostname}.qcow2"
-  pool   = var.storagepool
+  count  = length(var.hostnames)
+  name   = "${var.hostnames[count.index]}.qcow2"
+  pool   = libvirt_pool.pool.name
   source = var.qcow2
   format = "qcow2"
 }
 
-resource "libvirt_cloudinit_disk" "cloudinit" {
-  name      = "${var.clustername}-${var.hostname}-cloud-init.iso"
-  pool      = var.storagepool
-  user_data = data.template_file.user_data.rendered
-  meta_data = data.template_file.meta_data.rendered
-}
-
 resource "libvirt_domain" "kvm-app-stack" {
-  depends_on = [
-    libvirt_volume.volume
-  ]
-  name   = "${var.clustername}-${var.hostname}"
+  count          = length(var.hostnames)
+  name           = var.hostnames[count.index]
   memory = var.memory
   vcpu   = var.vcpu
 
+ # disk {
+ #   volume_id = libvirt_volume.volume.id
+ # }
   disk {
-    volume_id = libvirt_volume.volume.id
+    volume_id    = element(libvirt_volume.volume[*].id, count.index)
   }
 
-  cloudinit = libvirt_cloudinit_disk.cloudinit.id
+ # cloudinit = libvirt_cloudinit_disk.cloudinit.id
+  cloudinit = element(libvirt_cloudinit_disk.cloudinit[*].id, count.index)
 
   cpu {
     mode = "host-passthrough"

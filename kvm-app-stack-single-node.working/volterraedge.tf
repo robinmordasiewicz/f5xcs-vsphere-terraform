@@ -111,8 +111,7 @@ resource "volterra_voltstack_site" "pk8s_voltstack_site" {
   }
 
   volterra_certified_hw = "kvm-voltstack-combo"
-  #master_nodes          = ["${var.hostname}"]
-  master_nodes   = var.hostnames
+  master_nodes          = ["${var.hostname}"]
 
   k8s_cluster {
     name      = volterra_k8s_cluster.pk8s_cluster.name
@@ -140,19 +139,13 @@ resource "volterra_voltstack_site" "pk8s_voltstack_site" {
   deny_all_usb            = true
 }
 
-resource "volterra_registration_approval" "node-registration" {
-  #depends_on   = [libvirt_domain.volterradomain]
-  depends_on = [
-    volterra_voltstack_site.pk8s_voltstack_site
-  ]
-  count        = length(var.hostnames)
-  cluster_name = var.clustername
-  hostname     = var.hostnames[count.index]
-  cluster_size = length(var.hostnames)
-  retry        = 5
-  wait_time    = 300
-}
 
-output "token" {
-  value = volterra_token.site-token.id
+resource "volterra_registration_approval" "node-registration" {
+  depends_on = [libvirt_domain.kvm-app-stack]
+
+  cluster_name = var.clustername
+  hostname     = var.hostname
+  cluster_size = 1
+  retry        = 5
+  wait_time    = 60
 }

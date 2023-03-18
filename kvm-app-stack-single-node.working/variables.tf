@@ -12,16 +12,15 @@ variable "vcpu" {
 }
 
 variable "clustername" {
-  default = "k8s02-tor"
+  default = "k8s01-tor"
 }
 
 variable "k8scluster" {
   default = "app1-k8s"
 }
 
-variable "hostnames" {
-  type    = list(string)
-  default = ["mains01", "mains02", "mains03"]
+variable "hostname" {
+  default = "main01"
 }
 
 variable "storagepool" {

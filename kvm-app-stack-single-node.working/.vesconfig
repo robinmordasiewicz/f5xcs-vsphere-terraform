@@ -1,0 +1,2 @@
+server-urls: https://jpmc.console.ves.volterra.io/api
+p12-bundle: jpmc.console.ves.volterra.io.api-creds.p12
