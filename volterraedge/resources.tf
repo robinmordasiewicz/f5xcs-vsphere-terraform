@@ -1,4 +1,3 @@
-
 data "volterra_namespace" "system" {
   name = "system"
 }
@@ -51,7 +50,7 @@ resource "volterra_k8s_cluster_role_binding" "argocd_crb2" {
 
 resource "volterra_k8s_cluster" "appstackk8s" {
   name                              = var.clustername
-  namespace                         = "system"
+  namespace = data.volterra_namespace.system.name
   no_cluster_wide_apps              = true
   use_default_cluster_role_bindings = true
   use_default_cluster_roles         = true
@@ -86,24 +85,22 @@ resource "volterra_k8s_cluster" "appstackk8s" {
     }
   }
 
-  insecure_registry_list {
-    insecure_registries = ["example.com:5000"]
-  }
+  no_insecure_registries       = true
   use_default_psp = true
 }
 
 resource "volterra_voltstack_site" "appstacksite" {
   name = var.clustername
+  namespace = data.volterra_namespace.system.name
   labels = {
     "ves.io/provider" = "ves-io-VMWARE"
   }
-  namespace                = "system"
   default_blocked_services = true
   no_bond_devices          = true
   disable_gpu              = true
   k8s_cluster {
-    namespace = "system"
     name      = volterra_k8s_cluster.appstackk8s.name
+    namespace = data.volterra_namespace.system.name
   }
   master_nodes            = var.masternodes
   worker_nodes            = var.workernodes
@@ -111,7 +108,7 @@ resource "volterra_voltstack_site" "appstacksite" {
   default_network_config  = true
   default_storage_config  = true
   deny_all_usb            = true
-  volterra_certified_hw   = "kvm-volstack-combo"
+  volterra_certified_hw   = "kvm-voltstack-combo"
   address                 = var.address
   coordinates {
     latitude  = var.latitude
@@ -129,8 +126,8 @@ resource "volterra_registration_approval" "node-registration" {
   count        = length(local.hostnames)
   cluster_name = var.clustername
   hostname     = local.hostnames[count.index]
-  cluster_size = length(local.hostnames)
+  cluster_size = length(var.masternodes)
   retry        = 10
-  wait_time    = 61
+  wait_time    = 31
 }
 

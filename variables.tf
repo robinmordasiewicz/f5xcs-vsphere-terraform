@@ -1,11 +1,9 @@
-variable "masternodes" {
-  type    = list(string)
-  default = ["main01", "main02", "main03"]
+variable "VOLT_API_P12_FILE" {
+  type = string
 }
 
-variable "workernodes" {
-  type    = list(string)
-  default = ["worker01"]
+variable "VES_P12_PASSWORD" {
+  type = string
 }
 
 variable "tenant" {
@@ -17,19 +15,21 @@ locals {
   url       = "https://${var.tenant}.console.ves.volterra.io/api"
 }
 
+variable "masternodes" {
+  type    = list(string)
+  default = ["main01"]
+}
+
+variable "workernodes" {
+  type    = list(string)
+  default = []
+}
+
 variable "libvirt_admin" {
   type = string
 }
 
 variable "libvirt_ip" {
-  type = string
-}
-
-variable "VOLT_API_P12_FILE" {
-  type = string
-}
-
-variable "VES_P12_PASSWORD" {
   type = string
 }
 
@@ -83,10 +83,6 @@ variable "k8scluster" {
   default = "k8s-profile"
 }
 
-#variable "token" {
-#  type = string
-#  default = []
-#}
 variable "token" {
   type    = string
   default = ""
