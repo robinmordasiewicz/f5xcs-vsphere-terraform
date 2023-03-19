@@ -1,15 +1,13 @@
 # main.tf
 
-module "util" {
-  source = "./util"
-}
+#module "util" {
+#  source = "./util"
+#}
 
 module "libvirt" {
   source = "./libvirt"
-  #libvirt_depends_on = module.volterraedge.volterra_token.token
-  #token              = module.volterraedge.volterra_token.token.id
-  libvirt_depends_on = module.volterraedge.token
   token              = module.volterraedge.token
+  appstacksite       = module.volterraedge.appstacksite
   hostnames          = local.hostnames
   libvirt_admin      = var.libvirt_admin
   libvirt_ip         = var.libvirt_ip
@@ -32,4 +30,5 @@ module "volterraedge" {
   longitude         = var.longitude
   token             = var.token
   address           = var.address
+  kvmappstack       = module.libvirt.kvmappstack
 }

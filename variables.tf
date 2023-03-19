@@ -17,12 +17,12 @@ locals {
 
 variable "masternodes" {
   type    = list(string)
-  default = ["main01"]
+  default = ["main01","main02","mnain03"]
 }
 
 variable "workernodes" {
   type    = list(string)
-  default = []
+  default = ["worker01"]
 }
 
 variable "libvirt_admin" {
@@ -93,7 +93,8 @@ variable "address" {
   default = "26 Margueretta, Toronto Ontario"
 }
 
-variable "libvirt_depends_on" {
-  type    = any
+variable "kvmappstack" {
+  type = any
   default = []
 }
+

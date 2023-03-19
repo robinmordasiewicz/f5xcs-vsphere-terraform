@@ -8,6 +8,9 @@ resource "volterra_token" "token" {
 }
 
 resource "volterra_k8s_cluster_role" "allow_all" {
+  depends_on = [
+    volterra_token.token
+  ]
   name      = "admin"
   namespace = data.volterra_namespace.system.name
   policy_rule_list {
@@ -119,15 +122,20 @@ resource "volterra_voltstack_site" "appstacksite" {
   }
 }
 
+resource "time_sleep" "wait_60_seconds" {
+  depends_on = [ var.kvmappstack ]
+  create_duration = "60s"
+}
+
 resource "volterra_registration_approval" "node-registration" {
-  depends_on = [
-    volterra_voltstack_site.appstacksite
-  ]
-  count        = length(local.hostnames)
+  depends_on = [time_sleep.wait_60_seconds]
+  #count        = length(local.hostnames)
+  count         = length(var.kvmappstack)
   cluster_name = var.clustername
-  hostname     = local.hostnames[count.index]
+  #hostname     = local.hostnames[count.index]
+  hostname      = var.kvmappstack[count.index]
   cluster_size = length(var.masternodes)
-  retry        = 10
-  wait_time    = 31
+  retry        = 18
+  wait_time    = 11
 }
 

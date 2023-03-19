@@ -6,3 +6,11 @@ output "completion_time" {
 output "hostnames" {
   value = local.hostnames
 }
+
+output "appstacksite" {
+  value = module.volterraedge.appstacksite
+}
+
+output "kvmappstack" {
+   value = module.libvirt.kvmappstack[*]
+}
