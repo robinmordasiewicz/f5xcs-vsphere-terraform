@@ -11,7 +11,3 @@ variable "cpu" {
   default = "4"
 }
 
-variable "storagepool" {
-  default = "default"
-}
-

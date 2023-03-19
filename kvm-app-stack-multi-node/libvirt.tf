@@ -38,6 +38,7 @@ resource "libvirt_domain" "kvmappstack" {
   memory = var.memory
   vcpu   = var.cpu
   autostart = true
+  qemu_agent = false
   arch = "x86_64"
   xml {
     xslt = templatefile("${path.module}/machine.xsl", {})
