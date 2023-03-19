@@ -1,4 +1,4 @@
-resource "libvirt_pool" "pool" {
+resource "libvirt_pool" "storagepool" {
   name = var.clustername
   type = "dir"
   path = "/var/lib/libvirt/${var.clustername}"
@@ -21,13 +21,13 @@ resource "libvirt_cloudinit_disk" "cloudinit" {
                                    hostname    = local.hostnames[count.index],
                                  }
                                )
-  pool      = libvirt_pool.pool.name
+  pool = libvirt_pool.storagepool.name
 }
 
 resource "libvirt_volume" "volume" {
   count  = length(local.hostnames)
   name   = "${local.hostnames[count.index]}.qcow2"
-  pool   = libvirt_pool.pool.name
+  pool = libvirt_pool.storagepool.name
   source = var.qcow2
   format = "qcow2"
 }
