@@ -73,7 +73,7 @@ resource "volterra_k8s_cluster" "pk8s_cluster" {
     }
 
     cluster_roles {
-      name = "ves-io-admin-cluster-role"
+      name      = "ves-io-admin-cluster-role"
       namespace = "shared"
       tenant    = "ves-io"
     }
@@ -105,8 +105,8 @@ resource "volterra_voltstack_site" "pk8s_voltstack_site" {
   }
 
   volterra_certified_hw = "kvm-voltstack-combo"
-  master_nodes   = var.masternodes
-  worker_nodes   = var.workernodes
+  master_nodes          = var.masternodes
+  worker_nodes          = var.workernodes
 
   k8s_cluster {
     name      = volterra_k8s_cluster.pk8s_cluster.name
@@ -125,13 +125,13 @@ resource "volterra_voltstack_site" "pk8s_voltstack_site" {
   os {
     default_os_version = true
   }
-  address                  = var.address
+  address = var.address
   coordinates {
-    latitude = var.latitude
+    latitude  = var.latitude
     longitude = var.longitude
   }
   offline_survivability_mode {
-      enable_offline_survivability_mode = true
+    enable_offline_survivability_mode = true
   }
 
   no_bond_devices         = true

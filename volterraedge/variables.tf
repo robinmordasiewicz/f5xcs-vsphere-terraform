@@ -9,15 +9,15 @@ variable "longitude" {}
 variable "address" {}
 variable "url" {}
 variable "token" {
-  type = string
+  type    = string
   default = ""
 }
 variable "libvirt_domain" {
-  type = any
+  type    = any
   default = []
 }
 variable "volterradomain" {
-  type = any
+  type    = any
   default = []
 }
 locals {

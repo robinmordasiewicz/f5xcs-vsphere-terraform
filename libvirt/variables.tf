@@ -11,21 +11,21 @@ variable "libvirt_ip" {
   default = "192.168.1.95"
 }
 variable "clustername" {
-  type    = string
+  type = string
 }
 variable "token" {
-  type = string
+  type    = string
   default = "4afa7fbe-bf1c-4a2e-9092-0c15cc745c12"
 }
 variable "libvirt_depends_on" {
-  type = any
+  type    = any
   default = []
 }
 variable "latitude" {
-  type    = string
+  type = string
 }
 variable "longitude" {
-  type    = string
+  type = string
 }
 variable "memory" {
   default = 16389

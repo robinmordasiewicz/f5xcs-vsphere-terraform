@@ -69,7 +69,7 @@ resource "volterra_k8s_cluster" "appstackk8s" {
     }
 
     cluster_roles {
-      name = "ves-io-admin-cluster-role"
+      name      = "ves-io-admin-cluster-role"
       namespace = "shared"
       tenant    = "ves-io"
     }
@@ -87,13 +87,13 @@ resource "volterra_k8s_cluster" "appstackk8s" {
   }
 
   insecure_registry_list {
-    insecure_registries    = ["example.com:5000"]
+    insecure_registries = ["example.com:5000"]
   }
-  use_default_psp          = true
+  use_default_psp = true
 }
 
 resource "volterra_voltstack_site" "appstacksite" {
-  name                     = var.clustername
+  name = var.clustername
   labels = {
     "ves.io/provider" = "ves-io-VMWARE"
   }
@@ -102,23 +102,23 @@ resource "volterra_voltstack_site" "appstacksite" {
   no_bond_devices          = true
   disable_gpu              = true
   k8s_cluster {
-    namespace              = "system"
-    name                   = volterra_k8s_cluster.appstackk8s.name
+    namespace = "system"
+    name      = volterra_k8s_cluster.appstackk8s.name
   }
-  master_nodes             = var.masternodes
-  worker_nodes             = var.workernodes
-  logs_streaming_disabled  = true
-  default_network_config   = true
-  default_storage_config   = true
-  deny_all_usb             = true
-  volterra_certified_hw    = "kvm-volstack-combo"
-  address                  = var.address
+  master_nodes            = var.masternodes
+  worker_nodes            = var.workernodes
+  logs_streaming_disabled = true
+  default_network_config  = true
+  default_storage_config  = true
+  deny_all_usb            = true
+  volterra_certified_hw   = "kvm-volstack-combo"
+  address                 = var.address
   coordinates {
-    latitude = var.latitude
+    latitude  = var.latitude
     longitude = var.longitude
   }
   offline_survivability_mode {
-      enable_offline_survivability_mode = true
+    enable_offline_survivability_mode = true
   }
 }
 
