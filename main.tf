@@ -21,9 +21,9 @@ module "libvirt" {
 
 module "volterraedge" {
   source             = "./volterraedge"
-  VES_P12_PASSWORD   = var.VES_P12_PASSWORD
   VOLT_API_P12_FILE  = var.VOLT_API_P12_FILE
-  tenant             = var.tenant
+  VES_P12_PASSWORD   = var.VES_P12_PASSWORD
+  url                = local.url
   clustername        = var.clustername
   k8scluster         = var.k8scluster
   masternodes        = var.masternodes

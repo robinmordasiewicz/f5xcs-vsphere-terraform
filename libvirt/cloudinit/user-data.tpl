@@ -18,15 +18,14 @@ write_files:
         EtcdUseTLS: true
         Server: vip
       Vpm:
-        CertifiedHardware: kvm-voltstack-combo
         ClusterName: ${clustername}
         ClusterType: ce
         Config: /etc/vpm/config.yaml
         Hostname: ${hostname}
         Latitude: ${latitude}
         Longitude: ${longitude}
-        MauriceEndpoint: https://register.ves.volterra.io
-        MauricePrivateEndpoint: https://register-tls.ves.volterra.io
+        MauriceEndpoint: "https://register.ves.volterra.io"
+        MauricePrivateEndpoint: "https://register-tls.ves.volterra.io"
         Proxy: {}
         Token: ${token}
 

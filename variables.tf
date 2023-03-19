@@ -8,8 +8,14 @@ variable "workernodes" {
   default = ["worker01" ]
 }
 
+variable "tenant" {
+  type = string
+  default = var.tenant
+}
+
 locals {
   hostnames = concat(var.masternodes, var.workernodes)
+  url       = "https://${var.tenant}.console.ves.volterra.io/api"
 }
 
 variable "libvirt_admin" {
@@ -25,10 +31,6 @@ variable "VOLT_API_P12_FILE" {
 }
 
 variable "VES_P12_PASSWORD" {
-  type        = string
-}
-
-variable "tenant" {
   type        = string
 }
 
@@ -83,17 +85,17 @@ variable "k8scluster" {
 }
 
 #variable "token" {
-#  type = any
+#  type = string
 #  default = []
 #}
 variable "token" {
   type = string
-  default = "4afa7fbe-bf1c-4a2e-9092-0c15cc745c12"
+  default = ""
 }
 
 variable "address" {
   type       = string
-  default    = ""
+  default    = "26 Margueretta, Toronto Ontario"
 }
 
 variable "libvirt_depends_on" {
