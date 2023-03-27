@@ -1,28 +1,36 @@
 variable "VOLT_API_P12_FILE" {
   type = string
+  sensitive = true
 }
 
 variable "VES_P12_PASSWORD" {
   type = string
+  sensitive = true
 }
 
 variable "tenant" {
   type = string
+  sensitive = true
 }
 
 locals {
-  hostnames = concat(var.masternodes, var.workernodes)
-  url       = "https://${var.tenant}.console.ves.volterra.io/api"
+  hostnames         = concat(var.masternodes, var.workernodes)
+  url               = "https://${var.tenant}.console.ves.volterra.io/api"
+  VOLT_API_P12_FILE = var.VOLT_API_P12_FILE
+  VES_P12_PASSWORD  = var.VES_P12_PASSWORD
+  tenant            = var.tenant
+  libvirt_admin     = var.libvirt_admin
+  libvirt_ip        = var.libvirt_ip
 }
 
 variable "masternodes" {
   type    = list(string)
-  default = ["main01","main02","mnain03"]
+  default = ["main01"]
 }
 
 variable "workernodes" {
   type    = list(string)
-  default = ["worker01"]
+  default = []
 }
 
 variable "libvirt_admin" {

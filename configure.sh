@@ -5,6 +5,7 @@ else
   read -e -p "Tenant Name: " TF_VAR_tenant
 fi
 export TF_VAR_tenant
+export tenant=${TF_VAR_tenant}
 
 export TF_VAR_VOLT_API_P12_FILE="${TF_VAR_tenant}.console.ves.volterra.io.api-creds.p12"
 export VOLT_API_P12_FILE="${TF_VAR_tenant}.console.ves.volterra.io.api-creds.p12"

@@ -9,8 +9,8 @@ module "libvirt" {
   token              = module.volterraedge.token
   appstacksite       = module.volterraedge.appstacksite
   hostnames          = local.hostnames
-  libvirt_admin      = var.libvirt_admin
-  libvirt_ip         = var.libvirt_ip
+  libvirt_admin      = local.libvirt_admin
+  libvirt_ip         = local.libvirt_ip
   latitude           = var.latitude
   longitude          = var.longitude
   clustername        = var.clustername
@@ -19,8 +19,8 @@ module "libvirt" {
 
 module "volterraedge" {
   source            = "./volterraedge"
-  VOLT_API_P12_FILE = var.VOLT_API_P12_FILE
-  VES_P12_PASSWORD  = var.VES_P12_PASSWORD
+  VOLT_API_P12_FILE = local.VOLT_API_P12_FILE
+  VES_P12_PASSWORD  = local.VES_P12_PASSWORD
   url               = local.url
   clustername       = var.clustername
   k8scluster        = var.k8scluster
